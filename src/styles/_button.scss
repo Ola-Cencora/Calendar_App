@@ -1,0 +1,20 @@
+@use "../styles/vars";
+
+.button {
+  background-color: vars.$color-main;
+  border: none;
+  padding: vars.$basic-size vars.$basic-size * 2;
+  border-radius: 40px;
+  color: white;
+  font-size: 1rem;
+  transition: vars.$transition;
+  font-family: "Roboto Flex", serif;
+
+  &:hover {
+    background-color: vars.$color-main-darker;
+  }
+
+  &.active {
+    background-color: vars.$color-main-darker;
+  }
+}

@@ -1,0 +1,12 @@
+@use "../styles/vars";
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: vars.$basic-size * 2;
+
+  &__title {
+    font-size: 2.5rem;
+    font-weight: 400;
+  }
+}
