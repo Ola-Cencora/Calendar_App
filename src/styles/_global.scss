@@ -6,4 +6,9 @@ body {
   padding: vars.$basic-size;
   font-family: "Roboto Flex", serif;
   font-weight: 400;
+
+  .calendar {
+    max-width: 1000px;
+    margin: vars.$basic-size auto;
+  }
 }

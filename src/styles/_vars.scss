@@ -2,6 +2,11 @@
 $color-main: #59a5d8;
 $color-main-darker: #386fa4;
 
-//other
+// grid
+$grid-gap: 2em;
+$grid-line-offset: calc($grid-gap / 2);
+$grid-line-thickness: 2px;
+
+// global
 $basic-size: 12px;
 $transition: all 0.2s ease-in-out;

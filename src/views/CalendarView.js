@@ -15,6 +15,7 @@ export class MonthView extends CalendarView {
     this.clearView();
     const grid = document.createElement("div");
     grid.className = "month-view";
+
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
     for (let day = 1; day <= daysInMonth; day++) {
