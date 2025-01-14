@@ -57,6 +57,10 @@
   }
 }
 
+.weekend {
+  color: vars.$color-main;
+}
+
 .weekdays {
   @extend .month-view;
   font-size: 12px;

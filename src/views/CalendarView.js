@@ -23,6 +23,19 @@ class CalendarView {
     }
   }
 
+  highlightWeekends(container, month, year) {
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const dayCells = container.querySelectorAll(".day-cell");
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dayOfWeek = new Date(year, month, day).getDay();
+
+      if (dayOfWeek === 1 || dayOfWeek === 0) {
+        dayCells[day].classList.add("weekend");
+      }
+    }
+  }
+
   nameWeekdays() {
     const weekdaysContainer = document.createElement("div");
     weekdaysContainer.className = "weekdays";
@@ -73,6 +86,7 @@ export class MonthView extends CalendarView {
     this.container.appendChild(grid);
 
     this.highlightToday(grid, { month, year });
+    this.highlightWeekends(grid, month, year);
   }
 }
 
