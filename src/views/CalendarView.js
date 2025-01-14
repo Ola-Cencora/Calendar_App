@@ -1,10 +1,36 @@
 class CalendarView {
   constructor(container) {
     this.container = container;
+    this.clearView();
   }
 
   clearView() {
     this.container.innerHTML = "";
+  }
+
+  setViewName(month, year) {
+    const viewNameHeading = document.createElement("h2");
+
+    const monthNames = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
+    ];
+
+    const monthName = monthNames[month];
+
+    viewNameHeading.textContent = `${monthName} ${year}`;
+    viewNameHeading.classList.add("viewName");
+    this.container.appendChild(viewNameHeading);
   }
 
   highlightToday(container, currentDate) {
@@ -60,7 +86,7 @@ export class MonthView extends CalendarView {
   }
 
   render(month, year) {
-    this.clearView();
+    this.setViewName(month, year);
     this.nameWeekdays();
 
     const grid = document.createElement("div");
