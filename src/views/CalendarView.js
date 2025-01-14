@@ -85,6 +85,30 @@ export class MonthView extends CalendarView {
     return day === 0 ? 6 : day - 1;
   }
 
+  renderWeekNumbers(calendarInnerWeeks, year, month) {
+    function getWeekNumber(d) {
+      d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+      d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
+      var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+      var weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
+      return [d.getUTCFullYear(), weekNo];
+    }
+
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month, daysInMonth);
+
+    const firstWeekNumber = getWeekNumber(firstDay)[1];
+    const lastWeekNumber = getWeekNumber(lastDay)[1];
+
+    for (let i = firstWeekNumber; i <= lastWeekNumber; i++) {
+      const weekNumberElement = document.createElement("div");
+      weekNumberElement.className = "week-number";
+      weekNumberElement.textContent = i;
+      calendarInnerWeeks.appendChild(weekNumberElement);
+    }
+  }
+
   renderDomElements() {
     const calendarInner = document.createElement("div");
     calendarInner.className = "calendar__inner";
@@ -98,11 +122,12 @@ export class MonthView extends CalendarView {
     calendarInnerWeeks.innerText = "week";
     calendarInner.appendChild(calendarInnerWeeks);
 
-    return { calendarInner, calendarInnerView };
+    return { calendarInner, calendarInnerView, calendarInnerWeeks };
   }
 
   render(month, year) {
-    const { calendarInner, calendarInnerView } = this.renderDomElements();
+    const { calendarInner, calendarInnerView, calendarInnerWeeks } =
+      this.renderDomElements();
 
     this.setViewName(month, year);
     this.nameWeekdays(calendarInnerView);
@@ -112,7 +137,6 @@ export class MonthView extends CalendarView {
     calendarInnerView.appendChild(grid);
 
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-
     const firstDay = this.getFirstDay(new Date(year, month, 1));
 
     for (let i = 0; i < firstDay; i++) {
@@ -130,6 +154,7 @@ export class MonthView extends CalendarView {
 
     this.container.appendChild(calendarInner);
 
+    this.renderWeekNumbers(calendarInnerWeeks, year, month);
     this.highlightToday(grid, { month, year });
     this.highlightWeekends(grid, month, year);
   }

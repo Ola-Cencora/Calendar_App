@@ -9,8 +9,9 @@
       order: 2;
     }
 
-    &__weeks {
+    &___weeks {
       order: 1;
+      display: grid;
     }
   }
 }
