@@ -1,5 +1,19 @@
 @use "../vars";
 
+.calendar {
+  &__inner {
+    display: grid;
+    grid-template-columns: 1fr 7fr;
+
+    &___view {
+      order: 2;
+    }
+
+    &__weeks {
+      order: 1;
+    }
+  }
+}
 .month-view {
   display: grid;
   grid-template-columns: repeat(7, 1fr);

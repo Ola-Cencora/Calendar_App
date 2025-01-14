@@ -62,7 +62,7 @@ class CalendarView {
     }
   }
 
-  nameWeekdays() {
+  nameWeekdays(wrapper) {
     const weekdaysContainer = document.createElement("div");
     weekdaysContainer.className = "weekdays";
 
@@ -73,7 +73,7 @@ class CalendarView {
       weekdaysContainer.appendChild(weekday);
     });
 
-    this.container.appendChild(weekdaysContainer);
+    wrapper.appendChild(weekdaysContainer);
   }
 }
 
@@ -85,12 +85,31 @@ export class MonthView extends CalendarView {
     return day === 0 ? 6 : day - 1;
   }
 
+  renderDomElements() {
+    const calendarInner = document.createElement("div");
+    calendarInner.className = "calendar__inner";
+
+    const calendarInnerView = document.createElement("div");
+    calendarInnerView.className = "calendar__inner___view";
+    calendarInner.appendChild(calendarInnerView);
+
+    const calendarInnerWeeks = document.createElement("div");
+    calendarInnerWeeks.className = "calendar__inner___weeks";
+    calendarInnerWeeks.innerText = "week";
+    calendarInner.appendChild(calendarInnerWeeks);
+
+    return { calendarInner, calendarInnerView };
+  }
+
   render(month, year) {
+    const { calendarInner, calendarInnerView } = this.renderDomElements();
+
     this.setViewName(month, year);
-    this.nameWeekdays();
+    this.nameWeekdays(calendarInnerView);
 
     const grid = document.createElement("div");
     grid.className = "month-view";
+    calendarInnerView.appendChild(grid);
 
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
@@ -109,7 +128,7 @@ export class MonthView extends CalendarView {
       grid.appendChild(dayElement);
     }
 
-    this.container.appendChild(grid);
+    this.container.appendChild(calendarInner);
 
     this.highlightToday(grid, { month, year });
     this.highlightWeekends(grid, month, year);
