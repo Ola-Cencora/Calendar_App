@@ -6,6 +6,22 @@ class CalendarView {
   clearView() {
     this.container.innerHTML = "";
   }
+
+  highlightToday(container, currentDate) {
+    const today = new Date();
+    if (
+      today.getFullYear() === currentDate.year &&
+      today.getMonth() === currentDate.month
+    ) {
+      const dayCells = container.querySelectorAll(".day-cell");
+      const todayNumber = today.getDate();
+      dayCells.forEach((cell) => {
+        if (parseInt(cell.textContent, 10) === todayNumber) {
+          cell.classList.add("today");
+        }
+      });
+    }
+  }
 }
 
 export class YearView extends CalendarView {}
@@ -39,6 +55,8 @@ export class MonthView extends CalendarView {
     }
 
     this.container.appendChild(grid);
+
+    this.highlightToday(grid, { month, year });
   }
 }
 
