@@ -56,3 +56,11 @@
     transform: translatex(-50%);
   }
 }
+
+.weekdays {
+  @extend .month-view;
+  font-size: 12px;
+  text-transform: uppercase;
+  text-align: center;
+  padding-bottom: vars.$basic-size;
+}

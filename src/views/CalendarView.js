@@ -22,6 +22,20 @@ class CalendarView {
       });
     }
   }
+
+  nameWeekdays() {
+    const weekdaysContainer = document.createElement("div");
+    weekdaysContainer.className = "weekdays";
+
+    const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    weekdays.forEach((day) => {
+      const weekday = document.createElement("div");
+      weekday.textContent = day;
+      weekdaysContainer.appendChild(weekday);
+    });
+
+    this.container.appendChild(weekdaysContainer);
+  }
 }
 
 export class YearView extends CalendarView {}
@@ -34,6 +48,8 @@ export class MonthView extends CalendarView {
 
   render(month, year) {
     this.clearView();
+    this.nameWeekdays();
+
     const grid = document.createElement("div");
     grid.className = "month-view";
 
