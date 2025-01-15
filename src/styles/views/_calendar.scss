@@ -1,8 +1,14 @@
 @use "../vars";
 
-.viewName {
-  font-size: 2rem;
-  font-weight: normal;
+.calendar__heading {
+  display: flex;
+  align-items: center;
+  gap: vars.$basic-size;
+
+  .viewName {
+    font-size: 2rem;
+    font-weight: normal;
+  }
 }
 
 .cell {

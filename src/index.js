@@ -2,7 +2,7 @@ import "./styles/main.scss";
 import { YearView, MonthView, WeekView, DayView } from "./views/CalendarView";
 
 const viewButtons = document.querySelector(".header__viewBtns");
-const calendarSection = document.querySelector(".calendar");
+const calendarSection = document.querySelector(".calendar__container");
 
 viewButtons.addEventListener("click", (e) => {
   const target = e.target;

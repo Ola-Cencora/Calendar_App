@@ -9,6 +9,7 @@ class CalendarView {
   }
 
   setViewName(month, year) {
+    const calendarHeading = document.querySelector(".calendar__heading__h2");
     const viewNameHeading = document.createElement("h2");
 
     const monthNames = [
@@ -30,7 +31,7 @@ class CalendarView {
 
     viewNameHeading.textContent = `${monthName} ${year}`;
     viewNameHeading.classList.add("viewName");
-    this.container.appendChild(viewNameHeading);
+    calendarHeading.appendChild(viewNameHeading);
   }
 
   highlightToday(container, currentDate) {
