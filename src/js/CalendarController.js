@@ -9,13 +9,18 @@ export class CalendarController {
   }
 
   init() {
-    this.attachEventListeners();
     this.renderView();
+    this.attachEventListeners();
   }
 
   attachEventListeners() {
     const viewButtons = document.querySelector(".header__viewBtns");
     viewButtons.addEventListener("click", (e) => this.handleViewChange(e));
+
+    const navigationButtons = document.querySelector(".calendar__heading");
+    navigationButtons.addEventListener("click", (e) =>
+      this.handleNavigation(e)
+    );
   }
 
   handleViewChange(event) {
@@ -28,6 +33,50 @@ export class CalendarController {
 
     this.view = target.dataset.view;
     this.renderView();
+  }
+
+  handleNavigation(event) {
+    const target = event.target;
+    if (!target.dataset.action) return;
+
+    switch (target.dataset.action) {
+      case "next":
+        this.incrementDate();
+        break;
+      case "prev":
+        this.decrementDate();
+        break;
+    }
+
+    this.renderView();
+  }
+
+  incrementDate() {
+    switch (this.view) {
+      case "month":
+        this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+        break;
+      /*case "week":
+        this.currentDate.setDate(this.currentDate.getDate() + 7);
+        break;
+      case "day":
+        this.currentDate.setDate(this.currentDate.getDate() + 1);
+        break;*/
+    }
+  }
+
+  decrementDate() {
+    switch (this.view) {
+      case "month":
+        this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+        break;
+      /*case "week":
+        this.currentDate.setDate(this.currentDate.getDate() - 7);
+        break;
+      case "day":
+        this.currentDate.setDate(this.currentDate.getDate() - 1);
+        break;*/
+    }
   }
 
   renderView() {
