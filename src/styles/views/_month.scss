@@ -1,98 +1,47 @@
 @use "../vars";
 
-.calendar {
-  &__inner {
-    display: grid;
-    grid-template-columns: 0.5fr 10fr;
+.month {
+  display: grid;
+  grid-template-columns: 0.5fr 10fr;
 
-    &___view {
-      order: 2;
+  &__view {
+    order: 2;
+
+    &__weekdays {
+      @extend .month__view__grid;
+      font-size: 12px;
+      text-transform: uppercase;
+      text-align: center;
+      padding-bottom: vars.$basic-size;
     }
 
-    &___weeks {
-      order: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding-top: 26px;
-      font-size: 12px;
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      overflow: hidden;
+      gap: vars.$grid-gap;
 
-      & > div {
+      &___day-cell {
+        display: flex;
+        padding: 6px;
+        justify-content: center;
         height: 70px;
+        font-size: 14px;
+        font-weight: bold;
       }
     }
   }
-}
-.month-view {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  overflow: hidden;
-  gap: vars.$grid-gap;
-}
 
-.day-cell {
-  display: flex;
-  padding: 6px;
-  justify-content: center;
-  height: 70px;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  position: relative;
+  &__weeks {
+    order: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding-top: 26px;
+    font-size: 12px;
 
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    background-color: vars.$color-main-darker;
-    z-index: 1;
+    & > div {
+      height: 70px;
+    }
   }
-
-  &::after {
-    inline-size: 100vw;
-    block-size: vars.$grid-line-thickness;
-    inset-inline-start: 0;
-    inset-block-start: calc((vars.$grid-line-offset) * -1);
-  }
-
-  &::before {
-    inline-size: vars.$grid-line-thickness;
-    block-size: 100vw;
-    inset-block-start: 0;
-    inset-inline-start: calc((vars.$grid-line-offset) * -1);
-  }
-}
-
-.today {
-  color: white;
-  font-weight: normal;
-
-  &::before {
-    z-index: -1;
-    content: "";
-    position: absolute;
-    width: 2em;
-    height: 2em;
-    border-radius: 50%;
-    top: 0;
-    left: 50%;
-    transform: translatex(-50%);
-  }
-}
-
-.weekend {
-  color: vars.$color-main;
-}
-
-.weekdays {
-  @extend .month-view;
-  font-size: 12px;
-  text-transform: uppercase;
-  text-align: center;
-  padding-bottom: vars.$basic-size;
-}
-
-.viewName {
-  font-size: 2rem;
-  font-weight: normal;
 }

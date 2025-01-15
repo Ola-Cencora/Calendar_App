@@ -1,0 +1,54 @@
+@use "../vars";
+
+.viewName {
+  font-size: 2rem;
+  font-weight: normal;
+}
+
+.cell {
+  cursor: pointer;
+  position: relative;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    background-color: vars.$color-main-darker;
+    z-index: 1;
+  }
+
+  &::after {
+    inline-size: 100vw;
+    block-size: vars.$grid-line-thickness;
+    inset-inline-start: 0;
+    inset-block-start: calc((vars.$grid-line-offset) * -1);
+  }
+
+  &::before {
+    inline-size: vars.$grid-line-thickness;
+    block-size: 100vw;
+    inset-block-start: 0;
+    inset-inline-start: calc((vars.$grid-line-offset) * -1);
+  }
+}
+
+.today {
+  color: white;
+  font-weight: normal;
+
+  &::before {
+    z-index: -1;
+    content: "";
+    position: absolute;
+    width: 2em;
+    height: 2em;
+    border-radius: 50%;
+    top: 0;
+    left: 50%;
+    transform: translatex(-50%);
+  }
+}
+
+.weekend {
+  color: vars.$color-main;
+}
