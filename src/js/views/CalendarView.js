@@ -61,11 +61,14 @@ class CalendarView {
       ".month__view__grid___day-cell"
     );
 
+    const firstDay = this.getFirstDay(new Date(year, month, 1));
+
     for (let day = 1; day <= daysInMonth; day++) {
       const dayOfWeek = new Date(year, month, day).getDay();
 
-      if (dayOfWeek === 1 || dayOfWeek === 0) {
-        dayCells[day].classList.add("weekend");
+      if (dayOfWeek === 6 || dayOfWeek === 0) {
+        const cellIndex = firstDay + day - 1;
+        dayCells[cellIndex].classList.add("weekend");
       }
     }
   }
