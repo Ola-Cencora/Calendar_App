@@ -103,8 +103,7 @@ export class MonthView extends CalendarView {
 
     for (let i = firstWeekNumber; i <= lastWeekNumber; i++) {
       const weekNumberElement = document.createElement("div");
-      weekNumberElement.className = "week-number";
-      weekNumberElement.textContent = i;
+      weekNumberElement.textContent = `week ${i}`;
       calendarInnerWeeks.appendChild(weekNumberElement);
     }
   }
@@ -119,7 +118,6 @@ export class MonthView extends CalendarView {
 
     const calendarInnerWeeks = document.createElement("div");
     calendarInnerWeeks.className = "calendar__inner___weeks";
-    calendarInnerWeeks.innerText = "week";
     calendarInner.appendChild(calendarInnerWeeks);
 
     return { calendarInner, calendarInnerView, calendarInnerWeeks };
