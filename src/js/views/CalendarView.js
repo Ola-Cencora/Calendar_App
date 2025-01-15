@@ -100,22 +100,31 @@ export class MonthView extends CalendarView {
     function getWeekNumber(d) {
       d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
       d.setUTCDate(d.getUTCDate() + 4 - (d.getUTCDay() || 7));
-      var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-      var weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
+
+      const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+      const weekNo = Math.ceil(((d - yearStart) / 86400000 + 1) / 7);
+
       return [d.getUTCFullYear(), weekNo];
     }
 
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month, daysInMonth);
+    const seenWeeks = new Set();
 
-    const firstWeekNumber = getWeekNumber(firstDay)[1];
-    const lastWeekNumber = getWeekNumber(lastDay)[1];
+    for (let day = 1; day <= daysInMonth; day++) {
+      const currentDate = new Date(year, month, day);
+      const [weekYear, weekNumber] = getWeekNumber(currentDate);
 
-    for (let i = firstWeekNumber; i <= lastWeekNumber; i++) {
-      const weekNumberElement = document.createElement("div");
-      weekNumberElement.textContent = `week ${i}`;
-      monthCalendarWeeks.appendChild(weekNumberElement);
+      if (!seenWeeks.has(`${weekYear}-${weekNumber}`)) {
+        seenWeeks.add(`${weekYear}-${weekNumber}`);
+
+        const weekNumberElement = document.createElement("div");
+        weekNumberElement.textContent = `week ${weekNumber}`;
+        if (weekYear !== year) {
+          weekNumberElement.textContent += ` (${weekYear})`;
+        }
+
+        monthCalendarWeeks.appendChild(weekNumberElement);
+      }
     }
   }
 
