@@ -1,5 +1,5 @@
 import "./styles/main.scss";
-import { CalendarController } from "./js/CalendarController";
+import { CalendarController } from "./js/CalendarViewController";
 
 const calendarSection = document.querySelector(".calendar__container");
 

@@ -1,4 +1,4 @@
-import { MonthView } from "./views/CalendarView";
+import { MonthView } from "./views/CalendarViewService";
 
 export class CalendarController {
   constructor(container) {
