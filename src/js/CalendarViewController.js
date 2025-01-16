@@ -34,8 +34,8 @@ export class CalendarController {
       !target.classList.contains("empty")
     ) {
       const day = target.textContent;
-      const { calendarEvents } = this;
-      this.viewInstance.showModal(day, calendarEvents);
+      const { currentDate, calendarEvents } = this;
+      this.viewInstance.showModal(day, currentDate, calendarEvents);
       return;
     }
 

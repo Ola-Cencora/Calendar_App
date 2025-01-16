@@ -3,7 +3,6 @@ import mockData from "./mockData.json";
 export class BackendConnectionService {
   constructor() {
     this.events = [];
-    this.readData();
   }
 
   readData() {

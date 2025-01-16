@@ -1,7 +1,6 @@
 class CalendarView {
-  constructor(container, events) {
+  constructor(container) {
     this.container = container;
-    this.events = events;
     this.clearView();
   }
 
@@ -9,18 +8,62 @@ class CalendarView {
     this.container.innerHTML = "";
   }
 
-  showModal(day, calendarEvents) {
+  showModal(day, currentDate, calendarEvents) {
+    const month = currentDate.getMonth();
+    const year = currentDate.getFullYear();
+
+    const selectedDate = `${year}-${String(month + 1).padStart(
+      2,
+      "0"
+    )}-${String(day).padStart(2, "0")}`;
+    const dayData = calendarEvents.find((day) => day.date === selectedDate);
+    const eventsForDay = dayData ? dayData.events : [];
+
     const modal = document.createElement("div");
     modal.className = "modal";
+    let eventsHtml = "<ul>";
+
+    if (eventsForDay.length > 0) {
+      eventsForDay.forEach((event) => {
+        const startDate = new Date(event.startDate);
+        const endDate = new Date(event.endDate);
+
+        const options = {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+        };
+        const formattedDate = startDate.toLocaleDateString("en-US", options);
+
+        const startTime = startDate.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+        const endTime = endDate.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+        eventsHtml += `
+          <li>
+          <strong>${event.title}</strong><br />
+          ${formattedDate} &#x2022; ${startTime} - ${endTime}<br />
+          ${event.description}<br />
+          ${event.userId ? "User  " + event.userId : ""}
+          </li>        
+          `;
+      });
+    } else {
+      eventsHtml = "<p>No events for this day</p>";
+    }
+    eventsHtml += "</ul>";
 
     modal.innerHTML = `
       <div class="modal__content">
-        <p>Tutaj będą pobrane dane dla tego dnia ${day}</p>
+        ${eventsHtml}
       </div>
     `;
-
     document.body.appendChild(modal);
-    console.log(calendarEvents);
   }
 
   closeModal() {

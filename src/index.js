@@ -4,5 +4,7 @@ import { BackendConnectionService } from "./js/services/BackendConnectionService
 
 const calendarSection = document.querySelector(".calendar__container");
 
-const calendarEvents = new BackendConnectionService();
+const backendConnectionService = new BackendConnectionService();
+const calendarEvents = backendConnectionService.readData();
+
 const calendarView = new CalendarController(calendarSection, calendarEvents);
