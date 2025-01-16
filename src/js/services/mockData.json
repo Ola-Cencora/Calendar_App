@@ -1,0 +1,59 @@
+{
+  "2025-01-15": {
+    "events": [
+      {
+        "id": 1,
+        "title": "Meeting with team",
+        "time": "10:00 AM",
+        "startDate": "2025-01-15T10:00:00",
+        "endDate": "2025-01-15T11:00:00",
+        "description" : "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+        "userId": 101
+      },
+      {
+        "id": 2,
+        "title": "Lunch with client",
+        "time": "1:00 PM",
+        "startDate": "2025-01-15T13:00:00",
+        "endDate": "2025-01-15T14:00:00",
+        "description" : "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+        "userId": 102
+      }
+    ]
+  },
+  "2025-01-16": {
+    "events": [
+      {
+        "id": 3,
+        "title": "Project deadline",
+        "time": "All day",
+        "startDate": "2025-01-16T00:00:00",
+        "endDate": "2025-01-16T23:59:59",
+        "description" : "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+        "userId": null
+      }
+    ]
+  },
+  "2025-01-17": {
+    "events": [
+      {
+        "id": 4,
+        "title": "Workshop: Modern JavaScript",
+        "time": "2:00 PM",
+        "startDate": "2025-01-17T14:00:00",
+        "endDate": "2025-01-17T16:00:00",
+        "description" : "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+        "userId": 103
+      },
+      {
+        "id": 5,
+        "title": "Team retrospective",
+        "time": "4:30 PM",
+        "startDate": "2025-01-17T16:30:00",
+        "endDate": "2025-01-17T17:30:00",
+        "description" : "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+        "userId": 101
+      }
+    ]
+  }
+}

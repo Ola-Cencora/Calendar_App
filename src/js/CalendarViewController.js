@@ -1,8 +1,9 @@
 import { MonthView } from "./views/CalendarViewService";
 
 export class CalendarController {
-  constructor(container) {
+  constructor(container, events) {
     this.container = container;
+    this.calendarEvents = events;
     this.currentDate = new Date();
     this.view = "month";
     this.init();
@@ -33,7 +34,8 @@ export class CalendarController {
       !target.classList.contains("empty")
     ) {
       const day = target.textContent;
-      this.viewInstance.showModal(day);
+      const { calendarEvents } = this;
+      this.viewInstance.showModal(day, calendarEvents);
       return;
     }
 

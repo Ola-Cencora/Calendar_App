@@ -1,6 +1,7 @@
 class CalendarView {
-  constructor(container) {
+  constructor(container, events) {
     this.container = container;
+    this.events = events;
     this.clearView();
   }
 
@@ -8,7 +9,7 @@ class CalendarView {
     this.container.innerHTML = "";
   }
 
-  showModal(day) {
+  showModal(day, calendarEvents) {
     const modal = document.createElement("div");
     modal.className = "modal";
 
@@ -19,6 +20,7 @@ class CalendarView {
     `;
 
     document.body.appendChild(modal);
+    console.log(calendarEvents);
   }
 
   closeModal() {
