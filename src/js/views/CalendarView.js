@@ -8,6 +8,26 @@ class CalendarView {
     this.container.innerHTML = "";
   }
 
+  showModal(day) {
+    const modal = document.createElement("div");
+    modal.className = "modal";
+
+    modal.innerHTML = `
+      <div class="modal__content">
+        <p>Tutaj będą pobrane dane dla tego dnia ${day}</p>
+      </div>
+    `;
+
+    document.body.appendChild(modal);
+  }
+
+  closeModal() {
+    const modal = document.querySelector(".modal");
+    if (modal) {
+      modal.remove();
+    }
+  }
+
   setViewName(month, year) {
     const calendarHeading = document.querySelector(".calendar__heading__h2");
     let viewNameHeading = calendarHeading.querySelector(".viewName");
@@ -159,7 +179,7 @@ export class MonthView extends CalendarView {
 
     for (let i = 0; i < firstDay; i++) {
       const emptyCell = document.createElement("div");
-      emptyCell.className = "month__view__grid___day-cell cell";
+      emptyCell.className = "month__view__grid___day-cell cell empty";
       grid.appendChild(emptyCell);
     }
 

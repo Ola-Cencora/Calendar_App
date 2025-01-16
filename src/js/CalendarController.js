@@ -21,6 +21,25 @@ export class CalendarController {
     navigationButtons.addEventListener("click", (e) =>
       this.handleNavigation(e)
     );
+
+    document.addEventListener("click", (e) => this.handleToggleModal(e));
+  }
+
+  handleToggleModal(event) {
+    const target = event.target;
+
+    if (
+      target.classList.contains("month__view__grid___day-cell") &&
+      !target.classList.contains("empty")
+    ) {
+      const day = target.textContent;
+      this.viewInstance.showModal(day);
+      return;
+    }
+
+    if (target.classList.contains("modal")) {
+      this.viewInstance.closeModal();
+    }
   }
 
   handleViewChange(event) {
@@ -90,7 +109,8 @@ export class CalendarController {
         console.log("year");
         break;
       case "month":
-        new MonthView(this.container).render(month, year);
+        this.viewInstance = new MonthView(this.container);
+        this.viewInstance.render(month, year);
         break;
       case "week":
         console.log("week");
