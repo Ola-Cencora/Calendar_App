@@ -1,6 +1,7 @@
 class CalendarView {
-  constructor(container) {
+  constructor(container, events) {
     this.container = container;
+    this.calendarEvents = events;
     this.clearView();
   }
 
@@ -8,7 +9,15 @@ class CalendarView {
     this.container.innerHTML = "";
   }
 
-  showModal(day, currentDate, calendarEvents) {
+  checkDayEvents(selectedDate) {
+    const dayData = this.calendarEvents.find(
+      (day) => day.date === selectedDate
+    );
+    const eventsForDay = dayData ? dayData.events : [];
+    return eventsForDay;
+  }
+
+  showModal(day, currentDate) {
     const month = currentDate.getMonth();
     const year = currentDate.getFullYear();
 
@@ -16,8 +25,7 @@ class CalendarView {
       2,
       "0"
     )}-${String(day).padStart(2, "0")}`;
-    const dayData = calendarEvents.find((day) => day.date === selectedDate);
-    const eventsForDay = dayData ? dayData.events : [];
+    const eventsForDay = this.checkDayEvents(selectedDate);
 
     const modal = document.createElement("div");
     modal.className = "modal";
@@ -54,7 +62,7 @@ class CalendarView {
           `;
       });
     } else {
-      eventsHtml = "<p>No events for this day</p>";
+      eventsHtml = `<p>No events for this day</p>`;
     }
     eventsHtml += "</ul>";
 
@@ -231,7 +239,31 @@ export class MonthView extends CalendarView {
     for (let day = 1; day <= daysInMonth; day++) {
       const dayElement = document.createElement("div");
       dayElement.className = "month__view__grid___day-cell cell";
-      dayElement.textContent = day;
+      dayElement.setAttribute("data-day", day);
+      const dayNumber = document.createElement("span");
+      dayNumber.textContent = day;
+      dayElement.appendChild(dayNumber);
+
+      const dayDateString = `${year}-${String(month + 1).padStart(
+        2,
+        "0"
+      )}-${String(day).padStart(2, "0")}`;
+
+      const eventsForDay = this.checkDayEvents(dayDateString);
+
+      if (eventsForDay.length > 0) {
+        const eventContainer = document.createElement("div");
+        eventContainer.className = "month__view__grid___day-cell___event";
+
+        eventsForDay.forEach((event) => {
+          const eventTitle = document.createElement("p");
+          eventTitle.textContent = event.title;
+          eventContainer.appendChild(eventTitle);
+        });
+
+        dayElement.appendChild(eventContainer);
+      }
+
       grid.appendChild(dayElement);
     }
 

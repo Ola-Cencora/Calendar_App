@@ -22,12 +22,30 @@
       gap: vars.$grid-gap;
 
       &___day-cell {
-        display: flex;
+        min-width: 0;
         padding: 6px;
-        justify-content: center;
+        justify-items: center;
         height: 70px;
         font-size: 14px;
         font-weight: bold;
+        display: grid;
+        grid-template-rows: auto 1fr;
+
+        &___event {
+          color: black;
+          padding-top: 8px;
+          font-size: 10px;
+          font-weight: normal;
+          overflow: hidden;
+          width: 100%;
+
+          p {
+            margin: 2px 0;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+          }
+        }
       }
     }
   }

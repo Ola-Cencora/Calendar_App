@@ -29,18 +29,16 @@ export class CalendarController {
   handleToggleModal(event) {
     const target = event.target;
 
-    if (
-      target.classList.contains("month__view__grid___day-cell") &&
-      !target.classList.contains("empty")
-    ) {
-      const day = target.textContent;
-      const { currentDate, calendarEvents } = this;
-      this.viewInstance.showModal(day, currentDate, calendarEvents);
+    const dayCell = target.closest(".month__view__grid___day-cell");
+    if (dayCell && !dayCell.classList.contains("empty")) {
+      const day = dayCell.getAttribute("data-day");
+      this.viewInstance.showModal(day, this.currentDate);
       return;
     }
 
     if (target.classList.contains("modal")) {
       this.viewInstance.closeModal();
+      return;
     }
   }
 
@@ -111,7 +109,7 @@ export class CalendarController {
         console.log("year");
         break;
       case "month":
-        this.viewInstance = new MonthView(this.container);
+        this.viewInstance = new MonthView(this.container, this.calendarEvents);
         this.viewInstance.render(month, year);
         break;
       case "week":
