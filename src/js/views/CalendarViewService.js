@@ -17,14 +17,17 @@ class CalendarView {
     return eventsForDay;
   }
 
+  getDateString(year, month, day) {
+    return `${year}-${String(month + 1).padStart(2, "0")}-${String(
+      day
+    ).padStart(2, "0")}`;
+  }
+
   showModal(day, currentDate) {
     const month = currentDate.getMonth();
     const year = currentDate.getFullYear();
 
-    const selectedDate = `${year}-${String(month + 1).padStart(
-      2,
-      "0"
-    )}-${String(day).padStart(2, "0")}`;
+    const selectedDate = this.getDateString(year, month, day);
     const eventsForDay = this.checkDayEvents(selectedDate);
 
     const modal = document.createElement("div");
@@ -159,6 +162,23 @@ class CalendarView {
 
     wrapper.appendChild(weekdaysContainer);
   }
+
+  addDayEvents(dayDateString, dayElement) {
+    const eventsForDay = this.checkDayEvents(dayDateString);
+
+    if (eventsForDay.length > 0) {
+      const eventContainer = document.createElement("div");
+      eventContainer.className = "month__view__grid___day-cell___event";
+
+      eventsForDay.forEach((event) => {
+        const eventTitle = document.createElement("p");
+        eventTitle.textContent = event.title;
+        eventContainer.appendChild(eventTitle);
+      });
+
+      dayElement.appendChild(eventContainer);
+    }
+  }
 }
 
 export class YearView extends CalendarView {}
@@ -216,6 +236,30 @@ export class MonthView extends CalendarView {
     return { monthCalendar, monthCalendarView, monthCalendarWeeks };
   }
 
+  addEmptyCells(grid, firstDay) {
+    for (let i = 0; i < firstDay; i++) {
+      const emptyCell = document.createElement("div");
+      emptyCell.className = "month__view__grid___day-cell cell empty";
+      grid.appendChild(emptyCell);
+    }
+  }
+
+  addMonthDays(daysInMonth, grid, year, month) {
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dayElement = document.createElement("div");
+      dayElement.className = "month__view__grid___day-cell cell";
+      dayElement.setAttribute("data-day", day);
+      const dayNumber = document.createElement("span");
+      dayNumber.textContent = day;
+      dayElement.appendChild(dayNumber);
+
+      const dayDateString = this.getDateString(year, month, day);
+      this.addDayEvents(dayDateString, dayElement);
+
+      grid.appendChild(dayElement);
+    }
+  }
+
   render(month, year) {
     const { monthCalendar, monthCalendarView, monthCalendarWeeks } =
       this.renderDomElements();
@@ -230,45 +274,9 @@ export class MonthView extends CalendarView {
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const firstDay = this.getFirstDay(new Date(year, month, 1));
 
-    for (let i = 0; i < firstDay; i++) {
-      const emptyCell = document.createElement("div");
-      emptyCell.className = "month__view__grid___day-cell cell empty";
-      grid.appendChild(emptyCell);
-    }
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      const dayElement = document.createElement("div");
-      dayElement.className = "month__view__grid___day-cell cell";
-      dayElement.setAttribute("data-day", day);
-      const dayNumber = document.createElement("span");
-      dayNumber.textContent = day;
-      dayElement.appendChild(dayNumber);
-
-      const dayDateString = `${year}-${String(month + 1).padStart(
-        2,
-        "0"
-      )}-${String(day).padStart(2, "0")}`;
-
-      const eventsForDay = this.checkDayEvents(dayDateString);
-
-      if (eventsForDay.length > 0) {
-        const eventContainer = document.createElement("div");
-        eventContainer.className = "month__view__grid___day-cell___event";
-
-        eventsForDay.forEach((event) => {
-          const eventTitle = document.createElement("p");
-          eventTitle.textContent = event.title;
-          eventContainer.appendChild(eventTitle);
-        });
-
-        dayElement.appendChild(eventContainer);
-      }
-
-      grid.appendChild(dayElement);
-    }
-
+    this.addEmptyCells(grid, firstDay);
+    this.addMonthDays(daysInMonth, grid, year, month);
     this.container.appendChild(monthCalendar);
-
     this.renderWeekNumbers(monthCalendarWeeks, year, month);
     this.highlightToday(grid, { month, year });
     this.highlightWeekends(grid, month, year);
