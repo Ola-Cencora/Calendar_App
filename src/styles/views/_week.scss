@@ -1,0 +1,17 @@
+@use "../vars";
+
+.week {
+  height: 400px;
+  &__view {
+    height: 100%;
+    &__grid {
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      overflow: hidden;
+
+      &___day-cell {
+      }
+    }
+  }
+}
