@@ -115,7 +115,7 @@ export class CalendarController {
         break;
       case "week":
         this.viewInstance = new WeekView(this.container, this.calendarEvents);
-        this.viewInstance.render(this.currentDate);
+        this.viewInstance.render(month, year, this.currentDate);
         break;
       case "day":
         console.log("day");

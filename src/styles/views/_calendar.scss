@@ -42,22 +42,6 @@
   cursor: default;
 }
 
-.today {
-  color: white;
-
-  &::before {
-    z-index: -1;
-    content: "";
-    position: absolute;
-    width: 2em;
-    height: 2em;
-    border-radius: 50%;
-    top: 0;
-    left: 50%;
-    transform: translatex(-50%);
-  }
-}
-
 .weekend {
   color: vars.$color-main;
 }

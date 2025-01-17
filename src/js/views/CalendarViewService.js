@@ -113,14 +113,14 @@ class CalendarView {
     viewNameHeading.innerText = `${monthName} ${year}`;
   }
 
-  highlightToday(container, currentDate) {
+  highlightToday(container, currentDate, view) {
     const today = new Date();
     if (
       today.getFullYear() === currentDate.year &&
       today.getMonth() === currentDate.month
     ) {
       const dayCells = container.querySelectorAll(
-        ".month__view__grid___day-cell"
+        `.${view}__view__grid___day-cell`
       );
       const todayNumber = today.getDate();
       dayCells.forEach((cell) => {
@@ -131,10 +131,10 @@ class CalendarView {
     }
   }
 
-  highlightWeekends(container, month, year) {
+  highlightWeekends(container, month, year, view) {
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const dayCells = container.querySelectorAll(
-      ".month__view__grid___day-cell"
+      `.${view}__view__grid___day-cell`
     );
 
     const firstDay = this.getFirstDay(new Date(year, month, 1));
@@ -149,9 +149,9 @@ class CalendarView {
     }
   }
 
-  nameWeekdays(wrapper) {
+  nameWeekdays(wrapper, view) {
     const weekdaysContainer = document.createElement("div");
-    weekdaysContainer.className = "month__view__weekdays";
+    weekdaysContainer.className = `${view}__view__weekdays`;
 
     const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
     weekdays.forEach((day) => {
@@ -163,12 +163,12 @@ class CalendarView {
     wrapper.appendChild(weekdaysContainer);
   }
 
-  addDayEvents(dayDateString, dayElement) {
+  addDayEvents(dayDateString, dayElement, view) {
     const eventsForDay = this.checkDayEvents(dayDateString);
 
     if (eventsForDay.length > 0) {
       const eventContainer = document.createElement("div");
-      eventContainer.className = "month__view__grid___day-cell___event";
+      eventContainer.className = `${view}__view__grid___day-cell___event`;
 
       eventsForDay.forEach((event) => {
         const eventTitle = document.createElement("p");
@@ -254,7 +254,7 @@ export class MonthView extends CalendarView {
       dayElement.appendChild(dayNumber);
 
       const dayDateString = this.getDateString(year, month, day);
-      this.addDayEvents(dayDateString, dayElement);
+      this.addDayEvents(dayDateString, dayElement, "month");
 
       grid.appendChild(dayElement);
     }
@@ -265,7 +265,7 @@ export class MonthView extends CalendarView {
       this.renderDomElements();
 
     this.setViewName(month, year);
-    this.nameWeekdays(monthCalendarView);
+    this.nameWeekdays(monthCalendarView, "month");
 
     const grid = document.createElement("div");
     grid.className = "month__view__grid";
@@ -278,8 +278,8 @@ export class MonthView extends CalendarView {
     this.addMonthDays(daysInMonth, grid, year, month);
     this.container.appendChild(monthCalendar);
     this.renderWeekNumbers(monthCalendarWeeks, year, month);
-    this.highlightToday(grid, { month, year });
-    this.highlightWeekends(grid, month, year);
+    this.highlightToday(grid, { month, year }, "month");
+    this.highlightWeekends(grid, month, year, "month");
   }
 }
 
@@ -303,15 +303,7 @@ export class WeekView extends CalendarView {
     return startOfWeek;
   }
 
-  render(currentDate) {
-    const { weekCalendar, weekCalendarView } = this.renderDomElements();
-
-    const startOfWeek = this.getStartOfWeek(currentDate);
-
-    const grid = document.createElement("div");
-    grid.className = "week__view__grid";
-    weekCalendarView.appendChild(grid);
-
+  addWeekDays(startOfWeek, grid) {
     for (let i = 0; i < 7; i++) {
       const dayElement = document.createElement("div");
       dayElement.className = "week__view__grid___day-cell cell";
@@ -320,6 +312,7 @@ export class WeekView extends CalendarView {
 
       const dayNumber = document.createElement("span");
       dayNumber.textContent = dayDate.getDate();
+      dayElement.setAttribute("data-day", dayDate.getDate());
       dayElement.appendChild(dayNumber);
 
       const dayDateString = this.getDateString(
@@ -327,12 +320,27 @@ export class WeekView extends CalendarView {
         dayDate.getMonth(),
         dayDate.getDate()
       );
-      this.addDayEvents(dayDateString, dayElement);
+      this.addDayEvents(dayDateString, dayElement, "week");
 
       grid.appendChild(dayElement);
     }
+  }
 
+  render(month, year, currentDate) {
+    const { weekCalendar, weekCalendarView } = this.renderDomElements();
+    this.setViewName(month, year);
+    this.nameWeekdays(weekCalendarView, "week");
+
+    const startOfWeek = this.getStartOfWeek(currentDate);
+
+    const grid = document.createElement("div");
+    grid.className = "week__view__grid";
+    weekCalendarView.appendChild(grid);
+
+    this.addWeekDays(startOfWeek, grid);
     this.container.appendChild(weekCalendar);
+    this.highlightToday(grid, { month, year }, "week");
+    //this.highlightWeekends(grid, month, year, "week");
   }
 }
 
