@@ -132,19 +132,28 @@ class CalendarView {
   }
 
   highlightWeekends(container, month, year, view) {
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
     const dayCells = container.querySelectorAll(
       `.${view}__view__grid___day-cell`
     );
 
-    const firstDay = this.getFirstDay(new Date(year, month, 1));
+    if (view === "week") {
+      dayCells.forEach((cell, index) => {
+        const dayOfWeek = (index + 1) % 7;
+        if (dayOfWeek === 6 || dayOfWeek === 0) {
+          cell.classList.add("weekend");
+        }
+      });
+    } else {
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const firstDay = this.getFirstDay(new Date(year, month, 1));
 
-    for (let day = 1; day <= daysInMonth; day++) {
-      const dayOfWeek = new Date(year, month, day).getDay();
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dayOfWeek = new Date(year, month, day).getDay();
 
-      if (dayOfWeek === 6 || dayOfWeek === 0) {
-        const cellIndex = firstDay + day - 1;
-        dayCells[cellIndex].classList.add("weekend");
+        if (dayOfWeek === 6 || dayOfWeek === 0) {
+          const cellIndex = firstDay + day - 1;
+          dayCells[cellIndex].classList.add("weekend");
+        }
       }
     }
   }
@@ -340,7 +349,7 @@ export class WeekView extends CalendarView {
     this.addWeekDays(startOfWeek, grid);
     this.container.appendChild(weekCalendar);
     this.highlightToday(grid, { month, year }, "week");
-    //this.highlightWeekends(grid, month, year, "week");
+    this.highlightWeekends(grid, month, year, "week");
   }
 }
 
