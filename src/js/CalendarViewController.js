@@ -77,10 +77,10 @@ export class CalendarController {
       case "month":
         this.currentDate.setMonth(this.currentDate.getMonth() + 1);
         break;
-      /*case "week":
+      case "week":
         this.currentDate.setDate(this.currentDate.getDate() + 7);
         break;
-      case "day":
+      /*case "day":
         this.currentDate.setDate(this.currentDate.getDate() + 1);
         break;*/
     }
@@ -91,10 +91,10 @@ export class CalendarController {
       case "month":
         this.currentDate.setMonth(this.currentDate.getMonth() - 1);
         break;
-      /*case "week":
+      case "week":
         this.currentDate.setDate(this.currentDate.getDate() - 7);
         break;
-      case "day":
+      /*case "day":
         this.currentDate.setDate(this.currentDate.getDate() - 1);
         break;*/
     }
