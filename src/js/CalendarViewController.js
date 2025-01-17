@@ -5,8 +5,7 @@ export class CalendarController {
     this.container = container;
     this.calendarEvents = events;
     this.currentDate = new Date();
-    //this.view = "month";
-    this.view = "week";
+    this.view = "month";
     this.init();
   }
 
@@ -30,7 +29,9 @@ export class CalendarController {
   handleToggleModal(event) {
     const target = event.target;
 
-    const dayCell = target.closest(".month__view__grid___day-cell");
+    const dayCell = target.closest(
+      ".month__view__grid___day-cell, .week__view__grid___day-cell"
+    );
     if (dayCell && !dayCell.classList.contains("empty")) {
       const day = dayCell.getAttribute("data-day");
       this.viewInstance.showModal(day, this.currentDate);
