@@ -60,7 +60,7 @@ class WeekView extends CalendarView {
         if (isAllDayEvent) {
           eventElement.style.position = "relative";
           eventElement.style.height = "40px";
-          eventElement.style.top = "0";
+          eventElement.style.top = "20px";
         } else {
           const startHour = startDate.getHours();
           const startMinutes = startDate.getMinutes();
