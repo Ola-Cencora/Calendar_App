@@ -36,26 +36,39 @@ class WeekView extends CalendarView {
     return startOfWeek;
   }
 
-  addDayEvents(dayDateString, dayElement, view) {
+  addDayEvents(dayDateString, dayElement) {
     const eventsForDay = this.checkDayEvents(dayDateString);
 
     if (eventsForDay.length > 0) {
       const eventContainer = document.createElement("div");
-      eventContainer.className = `${view}__view__grid___day-cell__event-container`;
+      eventContainer.className = `week__view__grid___day-cell__event-container`;
 
       eventsForDay.forEach((event) => {
         const eventElement = document.createElement("div");
-        eventElement.className = `${view}__view__grid___day-cell__event-container___event`;
-        eventElement.textContent = event.title;
+        eventElement.className = `week__view__grid___day-cell__event-container___event`;
 
         const startDate = new Date(event.startDate);
         const endDate = new Date(event.endDate);
 
+        const startTime = startDate.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+        const endTime = endDate.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
         if (startDate.getHours() === 0 && endDate.getHours() === 23) {
+          eventElement.innerHTML = event.title;
+
           eventElement.style.position = "relative";
           eventElement.style.height = "40px";
           eventElement.style.top = "20px";
+          eventElement.style.textTransform = "uppercase";
         } else {
+          eventElement.innerHTML = `${event.title} <br> ${startTime} - ${endTime}`;
+
           const eventDurationInMinutes = (endDate - startDate) / 60000;
           const eventStartOffsetInMinutes =
             startDate.getHours() * 60 + startDate.getMinutes() - 5 * 60;
@@ -91,7 +104,7 @@ class WeekView extends CalendarView {
         dayDate.getMonth(),
         dayDate.getDate()
       );
-      this.addDayEvents(dayDateString, dayElement, "week");
+      this.addDayEvents(dayDateString, dayElement);
 
       grid.appendChild(dayElement);
     }
