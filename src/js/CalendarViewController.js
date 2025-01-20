@@ -77,6 +77,9 @@ export class CalendarViewController {
 
   incrementDate() {
     switch (this.view) {
+      case "year":
+        this.currentDate.setFullYear(this.currentDate.getFullYear() + 1);
+        break;
       case "month":
         this.currentDate.setMonth(this.currentDate.getMonth() + 1);
         break;
@@ -91,6 +94,9 @@ export class CalendarViewController {
 
   decrementDate() {
     switch (this.view) {
+      case "year":
+        this.currentDate.setFullYear(this.currentDate.getFullYear() - 1);
+        break;
       case "month":
         this.currentDate.setMonth(this.currentDate.getMonth() - 1);
         break;
