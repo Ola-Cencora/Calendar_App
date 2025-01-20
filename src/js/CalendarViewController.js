@@ -1,6 +1,7 @@
-import { MonthView, WeekView } from "./views/CalendarViewService";
+import MonthView from "./viewsService/MonthView";
+import WeekView from "./viewsService/WeekView";
 
-export class CalendarController {
+export class CalendarViewController {
   constructor(container, events) {
     this.container = container;
     this.calendarEvents = events;
