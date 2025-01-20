@@ -2,7 +2,7 @@ import CalendarView from "./CalendarView";
 
 class WeekView extends CalendarView {
   addTime(weekCalendarTime) {
-    for (let hour = 0; hour < 24; hour++) {
+    for (let hour = 5; hour < 23; hour++) {
       const timeSlot = document.createElement("div");
       timeSlot.className = "week__time___slot";
 
@@ -44,40 +44,24 @@ class WeekView extends CalendarView {
       eventContainer.className = `${view}__view__grid___day-cell__event-container`;
 
       eventsForDay.forEach((event) => {
-        const startDate = new Date(event.startDate);
-        const endDate = new Date(event.endDate);
-
-        const isAllDayEvent =
-          startDate.getHours() === 0 &&
-          startDate.getMinutes() === 0 &&
-          endDate.getHours() === 23 &&
-          endDate.getMinutes() === 59;
-
         const eventElement = document.createElement("div");
         eventElement.className = `${view}__view__grid___day-cell__event-container___event`;
         eventElement.textContent = event.title;
 
-        if (isAllDayEvent) {
+        const startDate = new Date(event.startDate);
+        const endDate = new Date(event.endDate);
+
+        if (startDate.getHours() === 0 && endDate.getHours() === 23) {
           eventElement.style.position = "relative";
           eventElement.style.height = "40px";
           eventElement.style.top = "20px";
         } else {
-          const startHour = startDate.getHours();
-          const startMinutes = startDate.getMinutes();
-          const endHour = endDate.getHours();
-          const endMinutes = endDate.getMinutes();
+          const eventDurationInMinutes = (endDate - startDate) / 60000;
+          const eventStartOffsetInMinutes =
+            startDate.getHours() * 60 + startDate.getMinutes() - 5 * 60;
 
-          const eventDurationInMinutes =
-            endHour * 60 + endMinutes - (startHour * 60 + startMinutes);
-          const eventStartOffsetInMinutes = startHour * 60 + startMinutes;
-
-          const totalGridHeight = 800;
-          const minutesInDay = 24 * 60;
-
-          const topOffset =
-            (eventStartOffsetInMinutes / minutesInDay) * totalGridHeight;
-          const height =
-            (eventDurationInMinutes / minutesInDay) * totalGridHeight;
+          const topOffset = (eventStartOffsetInMinutes / (18 * 60)) * 600;
+          const height = (eventDurationInMinutes / (18 * 60)) * 600;
 
           eventElement.style.top = `${topOffset + 24}px`;
           eventElement.style.height = `${height}px`;

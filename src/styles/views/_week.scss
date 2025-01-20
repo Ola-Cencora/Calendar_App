@@ -1,7 +1,6 @@
 @use "../vars";
 
 .week {
-  //height: 400px;
   display: grid;
   grid-template-columns: 0.5fr 7fr;
 
@@ -18,7 +17,7 @@
     }
 
     &__grid {
-      height: 800px;
+      height: 600px;
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       overflow: hidden;
@@ -87,11 +86,10 @@
     align-items: center;
     padding-right: calc(vars.$basic-size / 2);
     font-size: 12px;
-    //gap: 4px;
     padding: 62px 0 0 0;
 
     &___slot {
-      height: calc(800px / 24);
+      height: calc(600px / 18);
       display: flex;
       align-items: center;
     }
