@@ -36,6 +36,60 @@ class WeekView extends CalendarView {
     return startOfWeek;
   }
 
+  addDayEvents(dayDateString, dayElement, view) {
+    const eventsForDay = this.checkDayEvents(dayDateString);
+
+    if (eventsForDay.length > 0) {
+      const eventContainer = document.createElement("div");
+      eventContainer.className = `${view}__view__grid___day-cell__event-container`;
+
+      eventsForDay.forEach((event) => {
+        const startDate = new Date(event.startDate);
+        const endDate = new Date(event.endDate);
+
+        const isAllDayEvent =
+          startDate.getHours() === 0 &&
+          startDate.getMinutes() === 0 &&
+          endDate.getHours() === 23 &&
+          endDate.getMinutes() === 59;
+
+        const eventElement = document.createElement("div");
+        eventElement.className = `${view}__view__grid___day-cell__event-container___event`;
+        eventElement.textContent = event.title;
+
+        if (isAllDayEvent) {
+          eventElement.style.position = "relative";
+          eventElement.style.height = "40px";
+          eventElement.style.top = "0";
+        } else {
+          const startHour = startDate.getHours();
+          const startMinutes = startDate.getMinutes();
+          const endHour = endDate.getHours();
+          const endMinutes = endDate.getMinutes();
+
+          const eventDurationInMinutes =
+            endHour * 60 + endMinutes - (startHour * 60 + startMinutes);
+          const eventStartOffsetInMinutes = startHour * 60 + startMinutes;
+
+          const totalGridHeight = 800;
+          const minutesInDay = 24 * 60;
+
+          const topOffset =
+            (eventStartOffsetInMinutes / minutesInDay) * totalGridHeight;
+          const height =
+            (eventDurationInMinutes / minutesInDay) * totalGridHeight;
+
+          eventElement.style.top = `${topOffset + 24}px`;
+          eventElement.style.height = `${height}px`;
+        }
+
+        eventContainer.appendChild(eventElement);
+      });
+
+      dayElement.appendChild(eventContainer);
+    }
+  }
+
   addWeekDays(startOfWeek, grid) {
     for (let i = 0; i < 7; i++) {
       const dayElement = document.createElement("div");
