@@ -1,6 +1,18 @@
 import CalendarView from "./CalendarView";
 
 class WeekView extends CalendarView {
+  addTime(weekCalendarTime) {
+    for (let hour = 0; hour < 24; hour++) {
+      const timeSlot = document.createElement("div");
+      timeSlot.className = "week__time___slot";
+
+      const formattedHour = hour.toString().padStart(2, "0") + ":00";
+      timeSlot.textContent = formattedHour;
+
+      weekCalendarTime.appendChild(timeSlot);
+    }
+  }
+
   renderDomElements() {
     const weekCalendar = document.createElement("div");
     weekCalendar.className = "week";
@@ -9,7 +21,11 @@ class WeekView extends CalendarView {
     weekCalendarView.className = "week__view";
     weekCalendar.appendChild(weekCalendarView);
 
-    return { weekCalendar, weekCalendarView };
+    const weekCalendarTime = document.createElement("div");
+    weekCalendarTime.className = "week__time";
+    weekCalendar.appendChild(weekCalendarTime);
+
+    return { weekCalendar, weekCalendarView, weekCalendarTime };
   }
 
   getStartOfWeek(date) {
@@ -44,7 +60,8 @@ class WeekView extends CalendarView {
   }
 
   render(month, year, currentDate) {
-    const { weekCalendar, weekCalendarView } = this.renderDomElements();
+    const { weekCalendar, weekCalendarView, weekCalendarTime } =
+      this.renderDomElements();
     this.setViewName(month, year);
     this.nameWeekdays(weekCalendarView, "week");
 
@@ -55,6 +72,7 @@ class WeekView extends CalendarView {
     weekCalendarView.appendChild(grid);
 
     this.addWeekDays(startOfWeek, grid);
+    this.addTime(weekCalendarTime);
     this.container.appendChild(weekCalendar);
     this.highlightToday(grid, { month, year }, "week");
     this.highlightWeekends(grid, month, year, "week");

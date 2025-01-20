@@ -2,9 +2,12 @@
 
 .week {
   height: 400px;
+  display: grid;
+  grid-template-columns: 0.5fr 7fr;
 
   &__view {
     height: 100%;
+    order: 2;
 
     &__weekdays {
       display: grid;
@@ -20,6 +23,7 @@
       grid-template-columns: repeat(7, 1fr);
       overflow: hidden;
       gap: vars.$grid-gap;
+      padding-left: 8px;
 
       &___day-cell {
         margin-top: 12px;
@@ -46,6 +50,22 @@
           left: -0.4em;
         }
       }
+    }
+  }
+
+  &__time {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-right: calc(vars.$basic-size / 2);
+    font-size: 12px;
+    gap: 4px;
+    padding: 24px 0 0 0;
+
+    &___slot {
+      height: calc(400px / 24);
+      display: flex;
+      align-items: center;
     }
   }
 }
