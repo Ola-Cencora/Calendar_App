@@ -1,3 +1,4 @@
+import YearView from "./viewsService/YearView";
 import MonthView from "./viewsService/MonthView";
 import WeekView from "./viewsService/WeekView";
 
@@ -7,7 +8,7 @@ export class CalendarViewController {
     this.calendarEvents = events;
     this.currentDate = new Date();
     //this.view = "month";
-    this.view = "week";
+    this.view = "year";
     this.init();
   }
 
@@ -110,7 +111,8 @@ export class CalendarViewController {
 
     switch (this.view) {
       case "year":
-        console.log("year");
+        this.viewInstance = new YearView(this.container);
+        this.viewInstance.render(year);
         break;
       case "month":
         this.viewInstance = new MonthView(this.container, this.calendarEvents);

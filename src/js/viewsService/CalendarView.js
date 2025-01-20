@@ -110,7 +110,9 @@ class CalendarView {
     ];
 
     const monthName = monthNames[month];
-    viewNameHeading.innerText = `${monthName} ${year}`;
+    viewNameHeading.innerText = `${
+      month === "" ? `${year}` : `${monthName} ${year}`
+    }`;
   }
 
   highlightToday(container, currentDate, view) {
