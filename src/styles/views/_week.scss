@@ -64,18 +64,8 @@
       }
 
       .today {
-        color: white;
-
-        &::before {
-          z-index: -1;
-          content: "";
-          position: absolute;
-          width: 2em;
-          height: 2em;
-          border-radius: 50%;
-          top: -0.4em;
-          left: -0.4em;
-        }
+        color: vars.$color-highlight;
+        font-weight: bold;
       }
     }
   }
