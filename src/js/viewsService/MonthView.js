@@ -1,11 +1,6 @@
 import CalendarView from "./CalendarView";
 
 class MonthView extends CalendarView {
-  getFirstDay(date) {
-    const day = date.getDay();
-    return day === 0 ? 6 : day - 1;
-  }
-
   renderWeekNumbers(monthCalendarWeeks, year, month) {
     function getWeekNumber(d) {
       d = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));

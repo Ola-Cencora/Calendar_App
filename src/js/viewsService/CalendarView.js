@@ -84,16 +84,7 @@ class CalendarView {
     }
   }
 
-  setViewName(month, year) {
-    const calendarHeading = document.querySelector(".calendar__heading__h2");
-    let viewNameHeading = calendarHeading.querySelector(".viewName");
-
-    if (!viewNameHeading) {
-      viewNameHeading = document.createElement("h2");
-      viewNameHeading.classList.add("viewName");
-      calendarHeading.appendChild(viewNameHeading);
-    }
-
+  getMonthName(monthIndex) {
     const monthNames = [
       "January",
       "February",
@@ -108,8 +99,20 @@ class CalendarView {
       "November",
       "December",
     ];
+    return monthNames[monthIndex];
+  }
 
-    const monthName = monthNames[month];
+  setViewName(month, year) {
+    const calendarHeading = document.querySelector(".calendar__heading__h2");
+    let viewNameHeading = calendarHeading.querySelector(".viewName");
+
+    if (!viewNameHeading) {
+      viewNameHeading = document.createElement("h2");
+      viewNameHeading.classList.add("viewName");
+      calendarHeading.appendChild(viewNameHeading);
+    }
+
+    const monthName = this.getMonthName(month);
     viewNameHeading.innerText = `${
       month === "" ? `${year}` : `${monthName} ${year}`
     }`;
@@ -189,6 +192,11 @@ class CalendarView {
 
       dayElement.appendChild(eventContainer);
     }
+  }
+
+  getFirstDay(date) {
+    const day = date.getDay();
+    return day === 0 ? 6 : day - 1;
   }
 }
 
