@@ -33,7 +33,7 @@ class YearView extends CalendarView {
       monthCalendar.appendChild(monthName);
 
       const monthGrid = document.createElement("div");
-      monthGrid.className = "year__month___grid";
+      monthGrid.className = "year__month__grid";
       monthCalendar.appendChild(monthGrid);
 
       const firstDay = this.getFirstDay(new Date(year, month, 1));
