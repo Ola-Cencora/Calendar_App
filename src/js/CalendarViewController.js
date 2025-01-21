@@ -7,8 +7,7 @@ export class CalendarViewController {
     this.container = container;
     this.calendarEvents = events;
     this.currentDate = new Date();
-    //this.view = "month";
-    this.view = "year";
+    this.view = "month";
     this.init();
   }
 
@@ -118,7 +117,7 @@ export class CalendarViewController {
     switch (this.view) {
       case "year":
         this.viewInstance = new YearView(this.container);
-        this.viewInstance.render(year);
+        this.viewInstance.render(year, this.currentDate);
         break;
       case "month":
         this.viewInstance = new MonthView(this.container, this.calendarEvents);

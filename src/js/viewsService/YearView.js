@@ -1,13 +1,6 @@
 import CalendarView from "./CalendarView";
 
 class YearView extends CalendarView {
-  renderDomElements() {
-    const yearCalendar = document.createElement("div");
-    yearCalendar.className = "year";
-
-    return { yearCalendar };
-  }
-
   addMonthDays(grid, year, month) {
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
@@ -50,12 +43,39 @@ class YearView extends CalendarView {
     }
   }
 
-  render(year) {
-    const { yearCalendar } = this.renderDomElements();
+  highlightToday(container, currentDate) {
+    const today = new Date();
+
+    if (
+      today.getFullYear() === currentDate.getFullYear() &&
+      today.getMonth() === currentDate.getMonth()
+    ) {
+      const todayNumber = today.getDate();
+
+      container
+        .querySelectorAll(".year__month__grid___day-cell")
+        .forEach((cell) => {
+          if (parseInt(cell.textContent, 10) === todayNumber) {
+            const parentMonth = cell.closest(".year__month");
+            if (
+              Array.from(container.children).indexOf(parentMonth) ===
+              today.getMonth()
+            ) {
+              cell.classList.add("today");
+            }
+          }
+        });
+    }
+  }
+
+  render(year, currentDate) {
+    const yearCalendar = document.createElement("div");
+    yearCalendar.className = "year";
 
     this.setViewName("", year);
     this.renderMonths(yearCalendar, year);
     this.container.appendChild(yearCalendar);
+    this.highlightToday(yearCalendar, currentDate);
   }
 }
 

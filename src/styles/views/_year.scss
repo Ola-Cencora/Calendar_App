@@ -31,8 +31,27 @@
       grid-template-columns: repeat(7, 1fr);
       justify-items: center;
       gap: 4px;
+      position: relative;
 
       &___day-cell {
+        position: relative;
+      }
+
+      .today {
+        color: white;
+
+        &::before {
+          z-index: -1;
+          content: "";
+          position: absolute;
+          width: 1.5em;
+          height: 1.5em;
+          border-radius: 50%;
+          top: -2px;
+          left: 50%;
+          transform: translatex(-50%);
+          background-color: vars.$color-highlight;
+        }
       }
     }
   }
