@@ -1,13 +1,15 @@
 import YearView from "./viewsService/YearView";
 import MonthView from "./viewsService/MonthView";
 import WeekView from "./viewsService/WeekView";
+import DayView from "./viewsService/DayView";
 
 export class CalendarViewController {
   constructor(container, events) {
     this.container = container;
     this.calendarEvents = events;
     this.currentDate = new Date();
-    this.view = "month";
+    //this.view = "month";
+    this.view = "day";
     this.init();
   }
 
@@ -85,9 +87,9 @@ export class CalendarViewController {
       case "week":
         this.currentDate.setDate(this.currentDate.getDate() + 7);
         break;
-      /*case "day":
+      case "day":
         this.currentDate.setDate(this.currentDate.getDate() + 1);
-        break;*/
+        break;
     }
   }
 
@@ -102,9 +104,9 @@ export class CalendarViewController {
       case "week":
         this.currentDate.setDate(this.currentDate.getDate() - 7);
         break;
-      /*case "day":
+      case "day":
         this.currentDate.setDate(this.currentDate.getDate() - 1);
-        break;*/
+        break;
     }
   }
 
@@ -128,7 +130,8 @@ export class CalendarViewController {
         this.viewInstance.render(month, year, this.currentDate);
         break;
       case "day":
-        console.log("day");
+        this.viewInstance = new DayView(this.container, this.calendarEvents);
+        this.viewInstance.render(month, year, this.currentDate);
         break;
     }
   }

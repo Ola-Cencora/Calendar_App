@@ -102,7 +102,7 @@ class CalendarView {
     return monthNames[monthIndex];
   }
 
-  setViewName(month, year) {
+  setViewName(month, year, day = "") {
     const calendarHeading = document.querySelector(".calendar__heading__h2");
     let viewNameHeading = calendarHeading.querySelector(".viewName");
 
@@ -114,7 +114,7 @@ class CalendarView {
 
     const monthName = this.getMonthName(month);
     viewNameHeading.innerText = `${
-      month === "" ? `${year}` : `${monthName} ${year}`
+      month === "" ? `${year}` : `${monthName} ${day} ${year}`
     }`;
   }
 
