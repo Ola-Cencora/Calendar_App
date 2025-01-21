@@ -43,6 +43,7 @@ class YearView extends CalendarView {
         monthGrid.appendChild(emptyCell);
       }
 
+      this.nameWeekdays(monthCalendar, "year");
       this.addMonthDays(monthGrid, year, month);
 
       yearCalendar.appendChild(monthCalendar);

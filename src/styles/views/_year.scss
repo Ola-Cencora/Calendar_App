@@ -7,13 +7,26 @@
 
   &__month {
     padding: vars.$basic-size;
+    display: grid;
+
+    &__weekdays {
+      order: 1;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      justify-items: center;
+      gap: 4px;
+      padding-bottom: 6px;
+      color: vars.$color-main-darker;
+    }
 
     &__name {
+      order: 0;
       font-size: 1.2rem;
       text-transform: uppercase;
     }
 
     &__grid {
+      order: 2;
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       justify-items: center;

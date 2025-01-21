@@ -165,9 +165,16 @@ class CalendarView {
 
   nameWeekdays(wrapper, view) {
     const weekdaysContainer = document.createElement("div");
-    weekdaysContainer.className = `${view}__view__weekdays`;
 
-    const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    view === "year"
+      ? (weekdaysContainer.className = `${view}__month__weekdays`)
+      : (weekdaysContainer.className = `${view}__view__weekdays`);
+
+    let weekdays = [];
+    view === "year"
+      ? (weekdays = ["M", "T", "W", "T", "F", "S", "S"])
+      : (weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]);
+
     weekdays.forEach((day) => {
       const weekday = document.createElement("div");
       weekday.textContent = day;
