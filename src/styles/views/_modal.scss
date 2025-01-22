@@ -10,20 +10,33 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  display: flex;
+  flex-direction: column;
   z-index: 3;
+
+  &__buttons {
+    width: 700px;
+    display: flex;
+    justify-content: flex-end;
+  }
 
   &__content {
     background: white;
     padding: vars.$basic-size;
     border-radius: 8px;
     text-align: left;
+    width: 700px;
+    box-sizing: border-box;
 
-    ul {
+    &__list {
       list-style-type: none;
       margin: 0;
       padding: vars.$basic-size 0;
 
-      li {
+      &___event {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
         padding: vars.$basic-size 0;
       }
     }

@@ -9,7 +9,6 @@ class ModalController {
 
   addEventButtons() {
     const eventButtons = document.createElement("div");
-    eventButtons.className = "modal__content__event-buttons";
     const editButton = document.createElement("button");
     editButton.innerText = "edit";
     editButton.className = "button";
@@ -23,11 +22,13 @@ class ModalController {
   }
 
   showEvents(eventsForDay, modalContent) {
-    const eventsList = document.createElement("div");
+    const eventsList = document.createElement("ul");
+    eventsList.className = "modal__content__list";
 
     if (eventsForDay.length > 0) {
       eventsForDay.forEach((event) => {
         const eventElement = document.createElement("li");
+        eventElement.className = "modal__content__list___event";
 
         const startDate = new Date(event.startDate);
         const endDate = new Date(event.endDate);
@@ -58,8 +59,8 @@ class ModalController {
 
         const eventButtons = this.addEventButtons();
 
-        eventElement.appendChild(eventButtons);
         eventElement.appendChild(eventContent);
+        eventElement.appendChild(eventButtons);
         eventsList.appendChild(eventElement);
       });
     } else {
@@ -84,7 +85,7 @@ class ModalController {
     addButton.innerText = "add event";
     addButton.className = "button";
     const deleteButton = document.createElement("button");
-    deleteButton.innerText = "delete all events";
+    deleteButton.innerText = "delete all";
     deleteButton.className = "button";
 
     modalButtons.appendChild(addButton);
