@@ -34,7 +34,7 @@ export class CalendarViewController {
     const target = event.target;
 
     const dayCell = target.closest(
-      ".month__view__grid___day-cell, .week__view__grid___day-cell"
+      ".month__view__grid___day-cell, .week__view__grid___day-cell, .day__view___day"
     );
     if (dayCell && !dayCell.classList.contains("empty")) {
       const day = dayCell.getAttribute("data-day");

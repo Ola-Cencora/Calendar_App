@@ -13,7 +13,7 @@ class DayView extends CalendarView {
     }
   }
 
-  renderDomElements() {
+  renderDomElements(day) {
     const dayCalendar = document.createElement("div");
     dayCalendar.className = "day";
 
@@ -27,15 +27,16 @@ class DayView extends CalendarView {
 
     const dayCalendarDay = document.createElement("div");
     dayCalendarDay.className = "day__view___day";
+    dayCalendarDay.setAttribute("data-day", day);
     dayCalendarView.appendChild(dayCalendarDay);
 
     return { dayCalendar, dayCalendarTime };
   }
 
   render(month, year, currentDate) {
-    const { dayCalendar, dayCalendarTime } = this.renderDomElements();
-
     const day = currentDate.getDate();
+
+    const { dayCalendar, dayCalendarTime } = this.renderDomElements(day);
 
     this.setViewName(month, year, `${day}, `);
     this.addTime(dayCalendarTime);
