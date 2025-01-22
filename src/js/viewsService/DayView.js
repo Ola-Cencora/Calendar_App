@@ -6,11 +6,11 @@ class DayView extends CalendarView {
 
     if (eventsForDay.length > 0) {
       const eventContainer = document.createElement("div");
-      eventContainer.className = `day__view___day__event-container`;
+      eventContainer.className = `day__view__event-container`;
 
       eventsForDay.forEach((event) => {
         const eventElement = document.createElement("div");
-        eventElement.className = `day__view___day__event-container___event`;
+        eventElement.className = `day__view__event-container___event`;
 
         const startDate = new Date(event.startDate);
         const endDate = new Date(event.endDate);
@@ -56,18 +56,14 @@ class DayView extends CalendarView {
     const dayCalendar = document.createElement("div");
     dayCalendar.className = "day";
 
-    const dayCalendarView = document.createElement("div");
-    dayCalendarView.className = "day__view";
-    dayCalendar.appendChild(dayCalendarView);
-
     const dayCalendarTime = document.createElement("div");
-    dayCalendarTime.className = "day__view___time";
-    dayCalendarView.appendChild(dayCalendarTime);
+    dayCalendarTime.className = "day__time";
+    dayCalendar.appendChild(dayCalendarTime);
 
     const dayCalendarDay = document.createElement("div");
-    dayCalendarDay.className = "day__view___day";
+    dayCalendarDay.className = "day__view";
     dayCalendarDay.setAttribute("data-day", day);
-    dayCalendarView.appendChild(dayCalendarDay);
+    dayCalendar.appendChild(dayCalendarDay);
 
     return { dayCalendar, dayCalendarTime, dayCalendarDay };
   }

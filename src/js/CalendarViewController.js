@@ -8,8 +8,7 @@ export class CalendarViewController {
     this.container = container;
     this.calendarEvents = events;
     this.currentDate = new Date();
-    //this.view = "month";
-    this.view = "day";
+    this.view = "month";
     this.init();
   }
 
@@ -34,7 +33,7 @@ export class CalendarViewController {
     const target = event.target;
 
     const dayCell = target.closest(
-      ".month__view__grid___day-cell, .week__view__grid___day-cell, .day__view___day"
+      ".month__view__grid___day-cell, .week__view__grid___day-cell, .day__view"
     );
     if (dayCell && !dayCell.classList.contains("empty")) {
       const day = dayCell.getAttribute("data-day");

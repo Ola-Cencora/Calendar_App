@@ -184,24 +184,6 @@ class CalendarView {
     wrapper.appendChild(weekdaysContainer);
   }
 
-  // tej metody używa tylko MonthView
-  addDayEvents(dayDateString, dayElement, view) {
-    const eventsForDay = this.checkDayEvents(dayDateString);
-
-    if (eventsForDay.length > 0) {
-      const eventContainer = document.createElement("div");
-      eventContainer.className = `${view}__view__grid___day-cell___event`;
-
-      eventsForDay.forEach((event) => {
-        const eventTitle = document.createElement("p");
-        eventTitle.textContent = event.title;
-        eventContainer.appendChild(eventTitle);
-      });
-
-      dayElement.appendChild(eventContainer);
-    }
-  }
-
   getFirstDay(date) {
     const day = date.getDay();
     return day === 0 ? 6 : day - 1;
@@ -212,7 +194,7 @@ class CalendarView {
       const timeSlot = document.createElement("div");
       view === "week"
         ? (timeSlot.className = "week__time___slot")
-        : (timeSlot.className = "day__view___time___slot");
+        : (timeSlot.className = "day__time___slot");
 
       const formattedHour = hour.toString().padStart(2, "0") + ":00";
       timeSlot.textContent = formattedHour;

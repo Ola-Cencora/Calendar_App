@@ -66,9 +66,26 @@ class MonthView extends CalendarView {
       dayElement.appendChild(dayNumber);
 
       const dayDateString = this.getDateString(year, month, day);
-      this.addDayEvents(dayDateString, dayElement, "month");
+      this.addDayEvents(dayDateString, dayElement);
 
       grid.appendChild(dayElement);
+    }
+  }
+
+  addDayEvents(dayDateString, dayElement) {
+    const eventsForDay = this.checkDayEvents(dayDateString);
+
+    if (eventsForDay.length > 0) {
+      const eventContainer = document.createElement("div");
+      eventContainer.className = "month__view__grid___day-cell___event";
+
+      eventsForDay.forEach((event) => {
+        const eventTitle = document.createElement("p");
+        eventTitle.textContent = event.title;
+        eventContainer.appendChild(eventTitle);
+      });
+
+      dayElement.appendChild(eventContainer);
     }
   }
 

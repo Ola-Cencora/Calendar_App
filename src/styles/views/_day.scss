@@ -1,60 +1,58 @@
 @use "../vars";
 
 .day {
-  &__view {
-    display: grid;
-    grid-template-columns: 1fr 9fr;
-    height: 600px;
+  display: grid;
+  grid-template-columns: 1fr 9fr;
+  height: 600px;
 
-    &___time {
+  &__time {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    top: -12px;
+
+    &___slot {
+      height: calc(600px / 18);
       display: flex;
-      position: relative;
-      flex-direction: column;
       align-items: center;
-      font-size: 12px;
-      top: -12px;
+    }
+  }
 
-      &___slot {
-        height: calc(600px / 18);
-        display: flex;
-        align-items: center;
-      }
+  &__view {
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        to bottom,
+        #e0e0e0,
+        #e0e0e0 1px,
+        transparent 1px,
+        transparent calc(600px / 18)
+      );
+      pointer-events: none;
+      z-index: 0;
     }
 
-    &___day {
+    &__event-container {
       position: relative;
+      z-index: 1;
 
-      &::after {
-        content: "";
+      &___event {
         position: absolute;
-        left: 0;
+        background-color: vars.$color-main;
+        color: white;
+        border-radius: 4px;
+        padding: 5px;
+        box-sizing: border-box;
+        font-size: 12px;
         width: 100%;
-        height: 100%;
-        background: repeating-linear-gradient(
-          to bottom,
-          #e0e0e0,
-          #e0e0e0 1px,
-          transparent 1px,
-          transparent calc(600px / 18)
-        );
-        pointer-events: none;
-        z-index: 0;
-      }
-
-      &__event-container {
-        position: relative;
-        z-index: 1;
-
-        &___event {
-          position: absolute;
-          background-color: vars.$color-main;
-          color: white;
-          border-radius: 4px;
-          padding: 5px;
-          box-sizing: border-box;
-          font-size: 12px;
-          width: 100%;
-        }
       }
     }
   }
