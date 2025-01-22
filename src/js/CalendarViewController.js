@@ -40,7 +40,7 @@ export class CalendarViewController {
 
     if (dayCell && !dayCell.classList.contains("empty")) {
       const day = dayCell.getAttribute("data-day");
-      this.modal.showModal(day, this.currentDate);
+      this.modal.openModal(day, this.currentDate);
       return;
     }
 

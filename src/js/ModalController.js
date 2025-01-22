@@ -7,19 +7,28 @@ class ModalController {
     this.calendar = calendar;
   }
 
-  showModal(day, currentDate) {
-    const month = currentDate.getMonth();
-    const year = currentDate.getFullYear();
+  addEventButtons() {
+    const eventButtons = document.createElement("div");
+    eventButtons.className = "modal__content__event-buttons";
+    const editButton = document.createElement("button");
+    editButton.innerText = "edit";
+    editButton.className = "button";
+    const deleteButton = document.createElement("button");
+    deleteButton.innerText = "delete";
+    deleteButton.className = "button";
+    eventButtons.appendChild(editButton);
+    eventButtons.appendChild(deleteButton);
 
-    const selectedDate = this.calendar.getDateString(year, month, day);
-    const eventsForDay = this.calendar.checkDayEvents(selectedDate);
+    return eventButtons;
+  }
 
-    const modal = document.createElement("div");
-    modal.className = "modal";
-    let eventsHtml = "<ul>";
+  showEvents(eventsForDay, modalContent) {
+    const eventsList = document.createElement("div");
 
     if (eventsForDay.length > 0) {
       eventsForDay.forEach((event) => {
+        const eventElement = document.createElement("li");
+
         const startDate = new Date(event.startDate);
         const endDate = new Date(event.endDate);
 
@@ -39,25 +48,66 @@ class ModalController {
           minute: "2-digit",
         });
 
-        eventsHtml += `
-          <li>
-          <strong>${event.title}</strong><br />
-          ${formattedDate} &#x2022; ${startTime} - ${endTime}<br />
-          ${event.description}<br />
-          ${event.userId ? "User  " + event.userId : ""}
-          </li>        
-          `;
+        const eventContent = document.createElement("div");
+        eventContent.innerHTML = `
+        <strong>${event.title}</strong><br />
+        ${formattedDate} &#x2022; ${startTime} - ${endTime}<br />
+        ${event.description}<br />
+        ${event.userId ? "User " + event.userId : ""}
+      `;
+
+        const eventButtons = this.addEventButtons();
+
+        eventElement.appendChild(eventButtons);
+        eventElement.appendChild(eventContent);
+        eventsList.appendChild(eventElement);
       });
     } else {
-      eventsHtml = `<p>No events for this day</p>`;
+      const noEventsMessage = document.createElement("p");
+      noEventsMessage.textContent = "No events";
+      eventsList.appendChild(noEventsMessage);
     }
-    eventsHtml += "</ul>";
 
-    modal.innerHTML = `
-      <div class="modal__content">
-        ${eventsHtml}
-      </div>
-    `;
+    modalContent.appendChild(eventsList);
+  }
+
+  renderDomElements(eventsForDay) {
+    const modal = document.createElement("div");
+    modal.className = "modal";
+
+    const modalContent = document.createElement("div");
+    modalContent.className = "modal__content";
+
+    const modalButtons = document.createElement("div");
+    modalButtons.className = "modal__buttons";
+    const addButton = document.createElement("button");
+    addButton.innerText = "add event";
+    addButton.className = "button";
+    const deleteButton = document.createElement("button");
+    deleteButton.innerText = "delete all events";
+    deleteButton.className = "button";
+
+    modalButtons.appendChild(addButton);
+    if (eventsForDay.length > 0) {
+      modalButtons.appendChild(deleteButton);
+    }
+
+    modal.appendChild(modalButtons);
+    modal.appendChild(modalContent);
+
+    return { modal, modalContent };
+  }
+
+  openModal(day, currentDate) {
+    const month = currentDate.getMonth();
+    const year = currentDate.getFullYear();
+
+    const selectedDate = this.calendar.getDateString(year, month, day);
+    const eventsForDay = this.calendar.checkDayEvents(selectedDate);
+
+    const { modal, modalContent } = this.renderDomElements(eventsForDay);
+    this.showEvents(eventsForDay, modalContent);
+
     document.body.appendChild(modal);
   }
 
