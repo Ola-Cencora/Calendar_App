@@ -1,18 +1,6 @@
 import CalendarView from "./CalendarView";
 
 class DayView extends CalendarView {
-  addTime(dayCalendarTime) {
-    for (let hour = 5; hour < 23; hour++) {
-      const timeSlot = document.createElement("div");
-      timeSlot.className = "day__view___time___slot";
-
-      const formattedHour = hour.toString().padStart(2, "0") + ":00";
-      timeSlot.textContent = formattedHour;
-
-      dayCalendarTime.appendChild(timeSlot);
-    }
-  }
-
   renderDomElements(day) {
     const dayCalendar = document.createElement("div");
     dayCalendar.className = "day";
@@ -39,7 +27,7 @@ class DayView extends CalendarView {
     const { dayCalendar, dayCalendarTime } = this.renderDomElements(day);
 
     this.setViewName(month, year, `${day}, `);
-    this.addTime(dayCalendarTime);
+    this.addTime(dayCalendarTime, "day");
     this.container.appendChild(dayCalendar);
   }
 }

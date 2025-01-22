@@ -205,6 +205,20 @@ class CalendarView {
     const day = date.getDay();
     return day === 0 ? 6 : day - 1;
   }
+
+  addTime(container, view) {
+    for (let hour = 5; hour < 23; hour++) {
+      const timeSlot = document.createElement("div");
+      view === "week"
+        ? (timeSlot.className = "week__time___slot")
+        : (timeSlot.className = "day__view___time___slot");
+
+      const formattedHour = hour.toString().padStart(2, "0") + ":00";
+      timeSlot.textContent = formattedHour;
+
+      container.appendChild(timeSlot);
+    }
+  }
 }
 
 export default CalendarView;
