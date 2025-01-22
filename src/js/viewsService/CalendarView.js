@@ -184,6 +184,7 @@ class CalendarView {
     wrapper.appendChild(weekdaysContainer);
   }
 
+  // tej metody używa tylko MonthView
   addDayEvents(dayDateString, dayElement, view) {
     const eventsForDay = this.checkDayEvents(dayDateString);
 
