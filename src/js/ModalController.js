@@ -8,16 +8,32 @@ class ModalController {
     this.calendar = calendar;
   }
 
-  addEventButtons() {
+  updateModal(selectedDate) {
+    this.closeModal();
+
+    const eventsForDay = this.calendar.checkDayEvents(selectedDate);
+    const { modal, modalContent } = this.renderDomElements(eventsForDay);
+    this.showEvents(eventsForDay, modalContent);
+
+    document.body.appendChild(modal);
+    this.attachEventListeners();
+  }
+
+  addEventButtons(eventId) {
     const eventButtons = document.createElement("div");
+
     const editButton = document.createElement("button");
     editButton.innerText = "edit";
     editButton.className = "button";
     editButton.setAttribute("id", "edit-button");
+    editButton.setAttribute("data-id", eventId);
+
     const deleteButton = document.createElement("button");
     deleteButton.innerText = "delete";
     deleteButton.className = "button";
+    deleteButton.setAttribute("data-id", eventId);
     deleteButton.setAttribute("id", "delete-button");
+
     eventButtons.appendChild(editButton);
     eventButtons.appendChild(deleteButton);
 
@@ -60,7 +76,7 @@ class ModalController {
         ${event.userId ? "User " + event.userId : ""}
       `;
 
-        const eventButtons = this.addEventButtons();
+        const eventButtons = this.addEventButtons(event.id);
 
         eventElement.appendChild(eventContent);
         eventElement.appendChild(eventButtons);
@@ -104,7 +120,7 @@ class ModalController {
     return { modal, modalContent };
   }
 
-  attachEventListeners() {
+  attachEventListeners(selectedDate) {
     document.querySelector("#add-button").addEventListener("click", () => {
       console.log("add button");
     });
@@ -116,14 +132,17 @@ class ModalController {
       });
 
     document.querySelectorAll("#edit-button").forEach((button) => {
-      button.addEventListener("click", () => {
-        console.log("edit button");
+      button.addEventListener("click", (e) => {
+        const eventId = e.target.getAttribute("data-id");
+        console.log("edit button", eventId);
       });
     });
 
     document.querySelectorAll("#delete-button").forEach((button) => {
-      button.addEventListener("click", () => {
-        console.log("delete button");
+      button.addEventListener("click", (e) => {
+        const eventId = e.target.getAttribute("data-id");
+        this.backendService.deleteEvent(eventId, selectedDate);
+        this.updateModal(selectedDate);
       });
     });
   }
@@ -139,7 +158,7 @@ class ModalController {
     this.showEvents(eventsForDay, modalContent);
 
     document.body.appendChild(modal);
-    this.attachEventListeners();
+    this.attachEventListeners(selectedDate);
   }
 
   closeModal() {

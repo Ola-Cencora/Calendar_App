@@ -5,6 +5,18 @@ export class BackendConnectionService {
     this.events = [];
   }
 
+  deleteEvent(eventId, selectedDate) {
+    const selectedDay = this.events.find((listElement) => {
+      return listElement.date === selectedDate;
+    });
+    const eventIndex = selectedDay.events.findIndex(
+      (ev) => ev.id.toString() === eventId
+    );
+    if (eventIndex !== -1) {
+      selectedDay.events.splice(eventIndex, 1);
+    }
+  }
+
   readData() {
     this.events = Object.entries(mockData).map(([date, dayData]) => ({
       date,
