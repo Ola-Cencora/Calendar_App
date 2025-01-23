@@ -9,17 +9,22 @@ export class BackendConnectionService {
     const selectedDay = this.events.find((listElement) => {
       return listElement.date === selectedDate;
     });
-    console.log("przed", selectedDay.events);
 
-    const eventIndex = selectedDay.events.findIndex(
-      (ev) => ev.id.toString() === eventId
-    );
-    if (eventIndex !== -1) {
-      selectedDay.events.splice(eventIndex, 1);
+    if (selectedDay) {
+      const eventIndex = selectedDay.events.findIndex(
+        (ev) => ev.id.toString() === eventId
+      );
+
+      if (eventIndex !== -1) {
+        selectedDay.events.splice(eventIndex, 1);
+
+        if (selectedDay.events.length === 0) {
+          this.events = this.events.filter(
+            (listElement) => listElement.date !== selectedDate
+          );
+        }
+      }
     }
-    console.log("po", selectedDay.events);
-    console.log("index", eventIndex);
-    //console.log(this.events);
   }
 
   readData() {

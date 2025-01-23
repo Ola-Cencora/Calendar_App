@@ -10,14 +10,16 @@ class ModalController {
   }
 
   updateModal(selectedDate) {
-    this.closeModal();
+    const modal = document.querySelector(".modal");
+    const modalContent = modal?.querySelector(".modal__content");
 
     const eventsForDay = this.calendar.checkDayEvents(selectedDate);
-    const { modal, modalContent } = this.renderDomElements(eventsForDay);
-    this.showEvents(eventsForDay, modalContent);
 
-    document.body.appendChild(modal);
-    this.attachEventListeners();
+    if (modal && modalContent) {
+      modalContent.innerHTML = "";
+      this.showEvents(eventsForDay, modalContent);
+      this.attachEventListeners(selectedDate);
+    }
   }
 
   updateAll(selectedDate) {
