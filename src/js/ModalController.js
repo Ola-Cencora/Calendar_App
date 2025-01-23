@@ -1,6 +1,7 @@
 class ModalController {
-  constructor(backendService) {
+  constructor(backendService, calendarView) {
     this.backendService = backendService;
+    this.calendarView = calendarView;
     this.calendar = null;
   }
 
@@ -17,6 +18,11 @@ class ModalController {
 
     document.body.appendChild(modal);
     this.attachEventListeners();
+  }
+
+  updateAll(selectedDate) {
+    this.updateModal(selectedDate);
+    this.calendarView.renderView();
   }
 
   addEventButtons(eventId) {
@@ -142,7 +148,7 @@ class ModalController {
       button.addEventListener("click", (e) => {
         const eventId = e.target.getAttribute("data-id");
         this.backendService.deleteEvent(eventId, selectedDate);
-        this.updateModal(selectedDate);
+        this.updateAll(selectedDate);
       });
     });
   }

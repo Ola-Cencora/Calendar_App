@@ -10,7 +10,7 @@ export class CalendarViewController {
     this.calendarEvents = events;
     this.backendService = backendService;
     this.currentDate = new Date();
-    this.modal = new ModalController(backendService);
+    this.modal = new ModalController(backendService, this);
     this.view = "month";
     this.init();
   }
