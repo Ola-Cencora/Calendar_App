@@ -136,7 +136,8 @@ class ModalController {
     const deleteAllButton = document.querySelector("#delete-all-button");
     if (deleteAllButton)
       deleteAllButton.addEventListener("click", () => {
-        console.log("delete all button");
+        this.backendService.deleteAllEvents(selectedDate);
+        this.updateAll(selectedDate);
       });
 
     document.querySelectorAll("#edit-button").forEach((button) => {

@@ -5,6 +5,16 @@ export class BackendConnectionService {
     this.events = [];
   }
 
+  deleteAllEvents(selectedDate) {
+    const dayIndex = this.events.findIndex((listElement) => {
+      return listElement.date === selectedDate;
+    });
+
+    if (dayIndex !== -1) {
+      this.events.splice(dayIndex, 1);
+    }
+  }
+
   deleteEvent(eventId, selectedDate) {
     const selectedDay = this.events.find((listElement) => {
       return listElement.date === selectedDate;
