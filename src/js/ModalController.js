@@ -12,9 +12,11 @@ class ModalController {
     const editButton = document.createElement("button");
     editButton.innerText = "edit";
     editButton.className = "button";
+    editButton.setAttribute("id", "edit-button");
     const deleteButton = document.createElement("button");
     deleteButton.innerText = "delete";
     deleteButton.className = "button";
+    deleteButton.setAttribute("id", "delete-button");
     eventButtons.appendChild(editButton);
     eventButtons.appendChild(deleteButton);
 
@@ -84,19 +86,42 @@ class ModalController {
     const addButton = document.createElement("button");
     addButton.innerText = "add event";
     addButton.className = "button";
-    const deleteButton = document.createElement("button");
-    deleteButton.innerText = "delete all";
-    deleteButton.className = "button";
+    addButton.setAttribute("id", "add-button");
+    const deleteAllButton = document.createElement("button");
+    deleteAllButton.innerText = "delete all";
+    deleteAllButton.className = "button";
+    deleteAllButton.setAttribute("id", "delete-all-button");
 
     modalButtons.appendChild(addButton);
     if (eventsForDay.length > 0) {
-      modalButtons.appendChild(deleteButton);
+      modalButtons.appendChild(deleteAllButton);
     }
 
     modal.appendChild(modalButtons);
     modal.appendChild(modalContent);
 
     return { modal, modalContent };
+  }
+
+  attachEventListeners() {
+    document.querySelector("#add-button").addEventListener("click", () => {
+      console.log("add button");
+    });
+    document
+      .querySelector("#delete-all-button")
+      .addEventListener("click", () => {
+        console.log("delete all button");
+      });
+    document.querySelectorAll("#edit-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        console.log("edit button");
+      });
+    });
+    document.querySelectorAll("#delete-button").forEach((button) => {
+      button.addEventListener("click", () => {
+        console.log("delete button");
+      });
+    });
   }
 
   openModal(day, currentDate) {
@@ -110,6 +135,7 @@ class ModalController {
     this.showEvents(eventsForDay, modalContent);
 
     document.body.appendChild(modal);
+    this.attachEventListeners();
   }
 
   closeModal() {
