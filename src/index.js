@@ -9,5 +9,6 @@ const calendarEvents = backendConnectionService.readData();
 
 const calendarView = new CalendarViewController(
   calendarSection,
+  backendConnectionService,
   calendarEvents
 );

@@ -5,11 +5,12 @@ import DayView from "./viewsService/DayView";
 import ModalController from "./ModalController";
 
 export class CalendarViewController {
-  constructor(container, events) {
+  constructor(container, backendService, events) {
     this.container = container;
     this.calendarEvents = events;
+    this.backendService = backendService;
     this.currentDate = new Date();
-    this.modal = new ModalController();
+    this.modal = new ModalController(backendService);
     this.view = "month";
     this.init();
   }

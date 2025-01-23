@@ -1,5 +1,6 @@
 class ModalController {
-  constructor() {
+  constructor(backendService) {
+    this.backendService = backendService;
     this.calendar = null;
   }
 
@@ -107,16 +108,19 @@ class ModalController {
     document.querySelector("#add-button").addEventListener("click", () => {
       console.log("add button");
     });
-    document
-      .querySelector("#delete-all-button")
-      .addEventListener("click", () => {
+
+    const deleteAllButton = document.querySelector("#delete-all-button");
+    if (deleteAllButton)
+      deleteAllButton.addEventListener("click", () => {
         console.log("delete all button");
       });
+
     document.querySelectorAll("#edit-button").forEach((button) => {
       button.addEventListener("click", () => {
         console.log("edit button");
       });
     });
+
     document.querySelectorAll("#delete-button").forEach((button) => {
       button.addEventListener("click", () => {
         console.log("delete button");
