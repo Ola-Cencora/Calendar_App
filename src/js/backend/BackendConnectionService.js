@@ -28,6 +28,7 @@ export class BackendConnectionService {
     const newEvent = {
       id: Date.now(),
       ...eventData,
+      userId: null,
     };
 
     day.events.push(newEvent);
@@ -106,7 +107,6 @@ export class BackendConnectionService {
         id: event.id,
         title: event.title,
         description: event.description,
-        time: event.time,
         userId: event.userId,
         startDate: event.startDate,
         endDate: event.endDate,
