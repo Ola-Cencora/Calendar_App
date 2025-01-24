@@ -14,6 +14,7 @@ class ModalController {
     const modalContent = modal?.querySelector(".modal__content");
 
     const eventsForDay = this.calendar.checkDayEvents(selectedDate);
+    console.log("modal", eventsForDay);
 
     if (modal && modalContent) {
       modalContent.innerHTML = "";

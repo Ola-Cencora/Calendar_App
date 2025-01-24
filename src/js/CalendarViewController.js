@@ -12,6 +12,10 @@ export class CalendarViewController {
     this.currentDate = new Date();
     this.modal = new ModalController(backendService, this);
     this.view = "month";
+    this.backendService.onDataUpdate = (updatedEvents) => {
+      this.calendarEvents = updatedEvents;
+      this.renderView();
+    };
     this.init();
   }
 
@@ -137,6 +141,7 @@ export class CalendarViewController {
         this.viewInstance.render(month, year, this.currentDate);
         break;
     }
+    console.log("calendar view", this.calendarEvents);
 
     this.modal.setCalendar(this.viewInstance);
   }

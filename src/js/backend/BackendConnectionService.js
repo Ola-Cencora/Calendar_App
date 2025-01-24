@@ -33,20 +33,37 @@ export class BackendConnectionService {
     day.events.push(newEvent);
   }
 
-  updateEvent(eventId, selectedDate, updatedEventData) {
-    const day = this.events.find((day) => day.date === selectedDate);
+  updateEvent(eventId, originalDate, updatedEventData) {
+    const originalDay = this.events.find((day) => day.date === originalDate);
 
-    if (day) {
-      const event = this.getEventById(eventId);
-      if (event) {
+    if (originalDay) {
+      const eventIndex = originalDay.events.findIndex(
+        (event) => event.id.toString() === eventId.toString()
+      );
+
+      if (eventIndex !== -1) {
+        const [event] = originalDay.events.splice(eventIndex, 1);
+
+        if (originalDay.events.length === 0) {
+          this.events = this.events.filter((day) => day.date !== originalDate);
+        }
+
         Object.assign(event, updatedEventData);
-        if (updatedEventData.startDate) {
-          event.startDate = new Date(updatedEventData.startDate).toISOString();
+
+        const newDate = updatedEventData.startDate.slice(0, 10);
+        let newDay = this.events.find((day) => day.date === newDate);
+
+        if (!newDay) {
+          newDay = { date: newDate, events: [] };
+          this.events.push(newDay);
         }
-        if (updatedEventData.endDate) {
-          event.endDate = new Date(updatedEventData.endDate).toISOString();
-        }
+
+        newDay.events.push(event);
       }
+    }
+
+    if (this.onDataUpdate) {
+      this.onDataUpdate(this.events);
     }
   }
 
