@@ -42,3 +42,24 @@
     }
   }
 }
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: vars.$basic-size;
+
+  &__label {
+    display: flex;
+    flex-direction: column;
+
+    &___row {
+      flex-direction: row;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    gap: vars.$basic-size;
+    justify-content: center;
+  }
+}

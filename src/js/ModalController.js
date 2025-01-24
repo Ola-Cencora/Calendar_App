@@ -143,7 +143,7 @@ class ModalController {
     modalContent.innerHTML = "";
 
     const form = document.createElement("form");
-    form.className = "event-form";
+    form.className = "form";
 
     const selectedDateTime = new Date(selectedDate).toISOString().slice(0, 16);
     const selectedDateString = this.formatDate(selectedDateTime);
@@ -162,19 +162,19 @@ class ModalController {
       eventData.endDate.slice(11, 19) === "23:59:59";
 
     form.innerHTML = `
-    <label>
+    <label class="form__label">
       Title:
       <input type="text" name="title" value="${
         eventData?.title || ""
       }" required />
     </label>
-    <label>
+    <label class="form__label">
       Description:
       <textarea name="description" required>${
         eventData?.description || ""
       }</textarea>
     </label>
-    <label>
+    <label class="form__label___row">
       Date:
       <input type="date" name="date" value="${
         eventData
@@ -182,12 +182,12 @@ class ModalController {
           : selectedDateString
       }" required />
     </label>
-    <label>
+    <label class="form__label___row">
+          All day event
       <input type="checkbox" name="allDay" ${isAllDayEvent ? "checked" : ""} />
-      All Day Event
     </label>
-    <label>
-      Start Time:
+    <label class="form__label___row">
+      Start time:
       <input type="time" name="startTime" value="${
         isAllDayEvent
           ? "00:00"
@@ -196,8 +196,8 @@ class ModalController {
           : formatTime(new Date(selectedDate))
       }" ${isAllDayEvent ? "disabled" : ""} required />
     </label>
-    <label>
-      End Time:
+    <label class="form__label___row">
+      End time:
       <input type="time" name="endTime" value="${
         isAllDayEvent
           ? "23:59"
@@ -206,10 +206,12 @@ class ModalController {
           : formatTime(new Date(selectedDate))
       }" ${isAllDayEvent ? "disabled" : ""} required />
     </label>
-    <button type="submit" class="button">${
-      eventData ? "Save Changes" : "Add Event"
-    }</button>
-    <button class="button" id="cancel-button">Cancel</button>
+    <div class="form__buttons">
+      <button type="submit" class="button">${
+        eventData ? "save changes" : "add"
+      }</button>
+      <button class="button" id="cancel-button">cancel</button>
+    </div>
   `;
 
     modalContent.appendChild(form);
