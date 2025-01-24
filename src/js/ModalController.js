@@ -128,9 +128,80 @@ class ModalController {
     return { modal, modalContent };
   }
 
+  openEventForm(eventData = null, selectedDate) {
+    const modalContent = document.querySelector(".modal__content");
+    if (!modalContent) return;
+
+    modalContent.innerHTML = "";
+
+    const form = document.createElement("form");
+    form.className = "event-form";
+
+    form.innerHTML = `
+      <label>
+        Title:
+        <input type="text" name="title" value="${
+          eventData?.title || ""
+        }" required />
+      </label>
+      <label>
+        Description:
+        <textarea name="description" required>${
+          eventData?.description || ""
+        }</textarea>
+      </label>
+      <label>
+        Start Date:
+        <input type="datetime-local" name="startDate" value="${
+          eventData?.startDate
+            ? new Date(eventData.startDate).toISOString().slice(0, 16)
+            : ""
+        }" required />
+      </label>
+      <label>
+        End Date:
+        <input type="datetime-local" name="endDate" value="${
+          eventData?.endDate
+            ? new Date(eventData.endDate).toISOString().slice(0, 16)
+            : ""
+        }" required />
+      </label>
+      <button type="submit" class="button">${
+        eventData ? "Save Changes" : "Add Event"
+      }</button>
+      <button type="button" class="button" id="cancel-button">Cancel</button>
+    `;
+
+    modalContent.appendChild(form);
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const newEvent = {
+        title: formData.get("title"),
+        description: formData.get("description"),
+        startDate: formData.get("startDate"),
+        endDate: formData.get("endDate"),
+      };
+
+      if (eventData) {
+        this.backendService.updateEvent(eventData.id, selectedDate, newEvent);
+      } else {
+        this.backendService.addEvent(selectedDate, newEvent);
+      }
+
+      this.updateAll(selectedDate);
+    });
+
+    document.querySelector("#cancel-button").addEventListener("click", () => {
+      this.updateModal(selectedDate);
+    });
+  }
+
   attachEventListeners(selectedDate) {
     document.querySelector("#add-button").addEventListener("click", () => {
-      console.log("add button");
+      this.openEventForm(null, selectedDate);
     });
 
     const deleteAllButton = document.querySelector("#delete-all-button");
@@ -143,7 +214,8 @@ class ModalController {
     document.querySelectorAll("#edit-button").forEach((button) => {
       button.addEventListener("click", (e) => {
         const eventId = e.target.getAttribute("data-id");
-        console.log("edit button", eventId);
+        const eventData = this.backendService.getEventById(eventId);
+        this.openEventForm(eventData, selectedDate);
       });
     });
 
