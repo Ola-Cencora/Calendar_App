@@ -146,39 +146,71 @@ class ModalController {
     form.className = "event-form";
 
     const selectedDateTime = new Date(selectedDate).toISOString().slice(0, 16);
+    const selectedDateString = this.formatDate(selectedDateTime);
+
+    const formatTime = (date) => {
+      const hours = date.getHours().toString().padStart(2, "0");
+      const minutes = date.getMinutes().toString().padStart(2, "0");
+      return `${hours}:${minutes}`;
+    };
+
+    const isAllDayEvent =
+      eventData &&
+      eventData.startDate &&
+      eventData.endDate &&
+      eventData.startDate.slice(11, 19) === "00:00:00" &&
+      eventData.endDate.slice(11, 19) === "23:59:59";
 
     form.innerHTML = `
-      <label>
-        Title:
-        <input type="text" name="title" value="${
-          eventData?.title || ""
-        }" required />
-      </label>
-      <label>
-        Description:
-        <textarea name="description" required>${
-          eventData?.description || ""
-        }</textarea>
-      </label>
-      <label>
-      Start Date:
-      <input type="datetime-local" name="startDate" value="${
-        eventData?.startDate
-          ? new Date(eventData.startDate).toISOString().slice(0, 16)
-          : selectedDateTime
-      }" required />      </label>
-      <label>
-      End Date:
-      <input type="datetime-local" name="endDate" value="${
-        eventData?.endDate
-          ? new Date(eventData.endDate).toISOString().slice(0, 16)
-          : selectedDateTime
-      }" required />      </label>
-      <button type="submit" class="button">${
-        eventData ? "Save Changes" : "Add Event"
-      }</button>
-      <button class="button" id="cancel-button">Cancel</button>
-    `;
+    <label>
+      Title:
+      <input type="text" name="title" value="${
+        eventData?.title || ""
+      }" required />
+    </label>
+    <label>
+      Description:
+      <textarea name="description" required>${
+        eventData?.description || ""
+      }</textarea>
+    </label>
+    <label>
+      Date:
+      <input type="date" name="date" value="${
+        eventData
+          ? this.formatDate(new Date(eventData.startDate))
+          : selectedDateString
+      }" required />
+    </label>
+    <label>
+      <input type="checkbox" name="allDay" ${isAllDayEvent ? "checked" : ""} />
+      All Day Event
+    </label>
+    <label>
+      Start Time:
+      <input type="time" name="startTime" value="${
+        isAllDayEvent
+          ? "00:00"
+          : eventData
+          ? formatTime(new Date(eventData.startDate))
+          : formatTime(new Date(selectedDate))
+      }" ${isAllDayEvent ? "disabled" : ""} required />
+    </label>
+    <label>
+      End Time:
+      <input type="time" name="endTime" value="${
+        isAllDayEvent
+          ? "23:59"
+          : eventData
+          ? formatTime(new Date(eventData.endDate))
+          : formatTime(new Date(selectedDate))
+      }" ${isAllDayEvent ? "disabled" : ""} required />
+    </label>
+    <button type="submit" class="button">${
+      eventData ? "Save Changes" : "Add Event"
+    }</button>
+    <button class="button" id="cancel-button">Cancel</button>
+  `;
 
     modalContent.appendChild(form);
 
@@ -189,8 +221,20 @@ class ModalController {
       const newEvent = {
         title: formData.get("title"),
         description: formData.get("description"),
-        startDate: formData.get("startDate"),
-        endDate: formData.get("endDate"),
+        startDate:
+          formData.get("date") +
+          "T" +
+          (formData.get("allDay") === "on"
+            ? "00:00"
+            : formData.get("startTime")) +
+          ":00",
+        endDate:
+          formData.get("date") +
+          "T" +
+          (formData.get("allDay") === "on"
+            ? "23:59"
+            : formData.get("endTime")) +
+          ":59",
       };
 
       if (eventData) {
