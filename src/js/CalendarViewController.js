@@ -141,7 +141,6 @@ export class CalendarViewController {
         this.viewInstance.render(month, year, this.currentDate);
         break;
     }
-    console.log("calendar view", this.calendarEvents);
 
     this.modal.setCalendar(this.viewInstance);
   }

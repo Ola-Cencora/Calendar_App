@@ -14,7 +14,6 @@ class ModalController {
     const modalContent = modal?.querySelector(".modal__content");
 
     const eventsForDay = this.calendar.checkDayEvents(selectedDate);
-    console.log("modal", eventsForDay);
 
     if (modal && modalContent) {
       modalContent.innerHTML = "";
@@ -129,6 +128,14 @@ class ModalController {
     return { modal, modalContent };
   }
 
+  formatDate(date) {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = (d.getMonth() + 1).toString().padStart(2, "0");
+    const day = d.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
   openEventForm(eventData = null, selectedDate) {
     const modalContent = document.querySelector(".modal__content");
     if (!modalContent) return;
@@ -137,6 +144,8 @@ class ModalController {
 
     const form = document.createElement("form");
     form.className = "event-form";
+
+    const selectedDateTime = new Date(selectedDate).toISOString().slice(0, 16);
 
     form.innerHTML = `
       <label>
@@ -152,25 +161,23 @@ class ModalController {
         }</textarea>
       </label>
       <label>
-        Start Date:
-        <input type="datetime-local" name="startDate" value="${
-          eventData?.startDate
-            ? new Date(eventData.startDate).toISOString().slice(0, 16)
-            : ""
-        }" required />
-      </label>
+      Start Date:
+      <input type="datetime-local" name="startDate" value="${
+        eventData?.startDate
+          ? new Date(eventData.startDate).toISOString().slice(0, 16)
+          : selectedDateTime
+      }" required />      </label>
       <label>
-        End Date:
-        <input type="datetime-local" name="endDate" value="${
-          eventData?.endDate
-            ? new Date(eventData.endDate).toISOString().slice(0, 16)
-            : ""
-        }" required />
-      </label>
+      End Date:
+      <input type="datetime-local" name="endDate" value="${
+        eventData?.endDate
+          ? new Date(eventData.endDate).toISOString().slice(0, 16)
+          : selectedDateTime
+      }" required />      </label>
       <button type="submit" class="button">${
         eventData ? "Save Changes" : "Add Event"
       }</button>
-      <button type="button" class="button" id="cancel-button">Cancel</button>
+      <button class="button" id="cancel-button">Cancel</button>
     `;
 
     modalContent.appendChild(form);
@@ -189,7 +196,10 @@ class ModalController {
       if (eventData) {
         this.backendService.updateEvent(eventData.id, selectedDate, newEvent);
       } else {
-        this.backendService.addEvent(selectedDate, newEvent);
+        this.backendService.addEvent(
+          this.formatDate(newEvent.startDate),
+          newEvent
+        );
       }
 
       this.updateAll(selectedDate);
