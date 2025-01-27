@@ -1,4 +1,145 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class EventsService {}
+export class EventsService {
+  private calendarEvents: {
+    date: string;
+    events: {
+      id: number;
+      title: string;
+      description: string;
+      userId: number | null;
+      startDate: string;
+      endDate: string;
+    }[];
+  }[] = [
+    {
+      date: '2025-01-22',
+      events: [
+        {
+          id: 1,
+          title: 'Meeting with team',
+          description:
+            'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
+          userId: 101,
+          startDate: '2025-01-22T10:00:00',
+          endDate: '2025-01-22T11:00:00',
+        },
+        {
+          id: 2,
+          title: 'Lunch with client',
+          description:
+            'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
+          userId: 102,
+          startDate: '2025-01-22T13:00:00',
+          endDate: '2025-01-22T14:00:00',
+        },
+      ],
+    },
+    {
+      date: '2025-01-23',
+      events: [
+        {
+          id: 3,
+          title: 'Project deadline',
+          description:
+            'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
+          userId: null,
+          startDate: '2025-01-23T00:00:00',
+          endDate: '2025-01-23T23:59:59',
+        },
+      ],
+    },
+    {
+      date: '2025-01-24',
+      events: [
+        {
+          id: 4,
+          title: 'Workshop: Modern JavaScript',
+          description:
+            'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
+          userId: 103,
+          startDate: '2025-01-24T14:00:00',
+          endDate: '2025-01-24T16:00:00',
+        },
+        {
+          id: 5,
+          title: 'Team retrospective',
+          description:
+            'Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...',
+          userId: 101,
+          startDate: '2025-01-24T16:30:00',
+          endDate: '2025-01-24T17:30:00',
+        },
+      ],
+    },
+  ];
+
+  getAll() {
+    return this.calendarEvents;
+  }
+
+  findOne(id: number) {
+    for (const day of this.calendarEvents) {
+      const event = day.events.find((ev) => ev.id === id);
+      if (event) {
+        return event;
+      }
+    }
+
+    throw new Error(`Event with id ${id} not found`);
+  }
+
+  addEvent(
+    event: {
+      title: string;
+      description: string;
+      userId: number | null;
+      startDate: string;
+      endDate: string;
+    },
+    date: string,
+  ) {
+    const highestId = this.calendarEvents
+      .flatMap((day) => day.events)
+      .reduce((maxId, ev) => Math.max(maxId, ev.id), 0);
+
+    const newEvent = {
+      id: highestId + 1,
+      ...event,
+    };
+
+    let day = this.calendarEvents.find((d) => d.date === date);
+
+    if (!day) {
+      day = { date, events: [] };
+      this.calendarEvents.push(day);
+    }
+
+    day.events.push(newEvent);
+
+    return newEvent;
+  }
+
+  update(
+    date: string,
+    id: number,
+    eventUpdate: {
+      title?: string;
+      description?: string;
+      userId?: number | null;
+      startDate?: string;
+      endDate?: string;
+    },
+  ) {
+    const day = this.calendarEvents.find((d) => d.date === date);
+    day?.events.find((ev) => {
+      if (ev.id === id) {
+        return { ...ev, ...eventUpdate };
+      }
+      return ev;
+    });
+
+    return this.findOne(id);
+  }
+}
