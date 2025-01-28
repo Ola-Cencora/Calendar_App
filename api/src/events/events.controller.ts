@@ -7,6 +7,7 @@ import {
   Patch,
   Post,
   ParseIntPipe,
+  ValidationPipe,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
@@ -29,7 +30,7 @@ export class EventsController {
   @Post(':date')
   addEvent(
     @Param('date') date: string,
-    @Body()
+    @Body(ValidationPipe)
     createEventDto: CreateEventDto,
   ) {
     return this.eventsService.addEvent(createEventDto, date);
@@ -39,7 +40,7 @@ export class EventsController {
   update(
     @Param('date') date: string,
     @Param('id', ParseIntPipe) id: number,
-    @Body()
+    @Body(ValidationPipe)
     updateEventDto: UpdateEventDto,
   ) {
     return this.eventsService.update(date, id, updateEventDto);
