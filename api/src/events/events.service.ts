@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { CreateEventDto } from './dto/create-event.dto';
+import { UpdateEventDto } from './dto/update-event-dto';
 
 @Injectable()
 export class EventsService {
@@ -90,23 +92,14 @@ export class EventsService {
     throw new Error(`Event with id ${id} not found`);
   }
 
-  addEvent(
-    event: {
-      title: string;
-      description: string;
-      userId: number | null;
-      startDate: string;
-      endDate: string;
-    },
-    date: string,
-  ) {
+  addEvent(createEventDto: CreateEventDto, date: string) {
     const highestId = this.calendarEvents
       .flatMap((day) => day.events)
       .reduce((maxId, ev) => Math.max(maxId, ev.id), 0);
 
     const newEvent = {
       id: highestId + 1,
-      ...event,
+      ...createEventDto,
     };
 
     let day = this.calendarEvents.find((d) => d.date === date);
@@ -121,17 +114,7 @@ export class EventsService {
     return newEvent;
   }
 
-  update(
-    date: string,
-    id: number,
-    eventUpdate: {
-      title?: string;
-      description?: string;
-      userId?: number | null;
-      startDate?: string;
-      endDate?: string;
-    },
-  ) {
+  update(date: string, id: number, updateEventDto: UpdateEventDto) {
     const day = this.calendarEvents.find((d) => d.date === date);
 
     if (!day) {
@@ -141,7 +124,7 @@ export class EventsService {
     if (eventIndex === -1) {
       throw new Error(`Event with id ${id} not found`);
     }
-    day.events[eventIndex] = { ...day.events[eventIndex], ...eventUpdate };
+    day.events[eventIndex] = { ...day.events[eventIndex], ...updateEventDto };
 
     return day.events[eventIndex];
   }

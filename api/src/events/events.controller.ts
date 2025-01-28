@@ -6,8 +6,11 @@ import {
   Param,
   Patch,
   Post,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { EventsService } from './events.service';
+import { CreateEventDto } from './dto/create-event.dto';
+import { UpdateEventDto } from './dto/update-event-dto';
 
 @Controller('events')
 export class EventsController {
@@ -19,44 +22,32 @@ export class EventsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.eventsService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.eventsService.findOne(id);
   }
 
   @Post(':date')
   addEvent(
     @Param('date') date: string,
     @Body()
-    event: {
-      title: string;
-      description: string;
-      userId: number | null;
-      startDate: string;
-      endDate: string;
-    },
+    createEventDto: CreateEventDto,
   ) {
-    return this.eventsService.addEvent(event, date);
+    return this.eventsService.addEvent(createEventDto, date);
   }
 
   @Patch(':date/:id')
   update(
     @Param('date') date: string,
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body()
-    eventUpdate: {
-      title?: string;
-      description?: string;
-      userId?: number | null;
-      startDate?: string;
-      endDate?: string;
-    },
+    updateEventDto: UpdateEventDto,
   ) {
-    return this.eventsService.update(date, +id, eventUpdate);
+    return this.eventsService.update(date, id, updateEventDto);
   }
 
   @Delete(':date/:id')
-  delete(@Param('date') date: string, @Param('id') id: string) {
-    return this.eventsService.delete(date, +id);
+  delete(@Param('date') date: string, @Param('id', ParseIntPipe) id: number) {
+    return this.eventsService.delete(date, id);
   }
 
   @Delete(':date')
