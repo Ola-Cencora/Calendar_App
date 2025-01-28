@@ -133,13 +133,41 @@ export class EventsService {
     },
   ) {
     const day = this.calendarEvents.find((d) => d.date === date);
-    day?.events.find((ev) => {
-      if (ev.id === id) {
-        return { ...ev, ...eventUpdate };
-      }
-      return ev;
+
+    if (!day) {
+      throw new Error(`Day with date ${date} not found`);
+    }
+    const eventIndex = day.events.findIndex((ev) => ev.id === id);
+    if (eventIndex === -1) {
+      throw new Error(`Event with id ${id} not found`);
+    }
+    day.events[eventIndex] = { ...day.events[eventIndex], ...eventUpdate };
+
+    return day.events[eventIndex];
+  }
+
+  delete(date: string, id: number) {
+    const removedEvent = this.findOne(id);
+
+    this.calendarEvents = this.calendarEvents.map((day) => {
+      return {
+        date: day.date,
+        events: day.events.filter((ev) => ev.id !== id),
+      };
     });
 
-    return this.findOne(id);
+    return removedEvent;
+  }
+
+  deleteAll(date: string) {
+    const dayIndex = this.calendarEvents.findIndex((d) => d.date === date);
+
+    if (dayIndex === -1) {
+      throw new Error(`Day with date ${date} not found`);
+    }
+
+    const removedDay = this.calendarEvents.splice(dayIndex, 1);
+
+    return removedDay[0];
   }
 }
