@@ -15,3 +15,12 @@ datasource db {
   // uncomment next line if you use Prisma <5.10
   // directUrl = env("DATABASE_URL_UNPOOLED")
 }
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  userId      Int
+  description String
+  startDate   DateTime
+  endDate     DateTime
+}
