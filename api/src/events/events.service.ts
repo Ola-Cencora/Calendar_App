@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event-dto';
+import { NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class EventsService {
@@ -84,12 +85,11 @@ export class EventsService {
   findOne(id: number) {
     for (const day of this.calendarEvents) {
       const event = day.events.find((ev) => ev.id === id);
-      if (event) {
-        return event;
-      }
-    }
 
-    throw new Error(`Event with id ${id} not found`);
+      if (!event) throw new NotFoundException('Event not found');
+
+      return event;
+    }
   }
 
   addEvent(createEventDto: CreateEventDto, date: string) {
