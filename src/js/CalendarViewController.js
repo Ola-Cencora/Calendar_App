@@ -2,13 +2,20 @@ import YearView from "./viewsService/YearView";
 import MonthView from "./viewsService/MonthView";
 import WeekView from "./viewsService/WeekView";
 import DayView from "./viewsService/DayView";
+import ModalController from "./ModalController";
 
 export class CalendarViewController {
-  constructor(container, events) {
+  constructor(container, backendService, events) {
     this.container = container;
     this.calendarEvents = events;
+    this.backendService = backendService;
     this.currentDate = new Date();
+    this.modal = new ModalController(backendService, this);
     this.view = "month";
+    this.backendService.onDataUpdate = (updatedEvents) => {
+      this.calendarEvents = updatedEvents;
+      this.renderView();
+    };
     this.init();
   }
 
@@ -35,14 +42,15 @@ export class CalendarViewController {
     const dayCell = target.closest(
       ".month__view__grid___day-cell, .week__view__grid___day-cell, .day__view"
     );
+
     if (dayCell && !dayCell.classList.contains("empty")) {
       const day = dayCell.getAttribute("data-day");
-      this.viewInstance.showModal(day, this.currentDate);
+      this.modal.openModal(day, this.currentDate);
       return;
     }
 
     if (target.classList.contains("modal")) {
-      this.viewInstance.closeModal();
+      this.modal.closeModal();
       return;
     }
   }
@@ -133,5 +141,7 @@ export class CalendarViewController {
         this.viewInstance.render(month, year, this.currentDate);
         break;
     }
+
+    this.modal.setCalendar(this.viewInstance);
   }
 }
