@@ -8,7 +8,47 @@ export class EventsService {
   constructor(private readonly databaseService: DatabaseService) {}
 
   async getAll() {
-    return this.databaseService.event.findMany();
+    const events = await this.databaseService.event.findMany();
+
+    const groupedEvents: Record<
+      string,
+      {
+        date: string;
+        events: Array<{
+          id: number;
+          title: string;
+          description: string;
+          time: string;
+          userId: number | null;
+          startDate: Date;
+          endDate: Date;
+        }>;
+      }
+    > = {};
+
+    events.forEach((event) => {
+      const date = event.date.toISOString().split('T')[0];
+
+      if (!groupedEvents[date]) {
+        groupedEvents[date] = { date, events: [] };
+      }
+
+      groupedEvents[date].events.push({
+        id: event.id,
+        title: event.title,
+        description: event.description,
+        time: new Intl.DateTimeFormat('en-US', {
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+        }).format(new Date(event.startDate)),
+        userId: event.userId,
+        startDate: event.startDate,
+        endDate: event.endDate,
+      });
+    });
+
+    return Object.values(groupedEvents);
   }
 
   async findOne(id: number) {
