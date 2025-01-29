@@ -30,28 +30,25 @@ export class EventsController {
   @Post(':date')
   addEvent(
     @Param('date') date: string,
-    @Body(ValidationPipe)
-    createEventDto: CreateEventDto,
+    @Body(ValidationPipe) createEventDto: CreateEventDto,
   ) {
     return this.eventsService.addEvent(createEventDto, date);
   }
 
-  @Patch(':date/:id')
+  @Patch(':id')
   update(
-    @Param('date') date: string,
     @Param('id', ParseIntPipe) id: number,
-    @Body(ValidationPipe)
-    updateEventDto: UpdateEventDto,
+    @Body(ValidationPipe) updateEventDto: UpdateEventDto,
   ) {
-    return this.eventsService.update(date, id, updateEventDto);
+    return this.eventsService.update(id, updateEventDto);
   }
 
-  @Delete(':date/:id')
-  delete(@Param('date') date: string, @Param('id', ParseIntPipe) id: number) {
-    return this.eventsService.delete(date, id);
+  @Delete(':id')
+  delete(@Param('id', ParseIntPipe) id: number) {
+    return this.eventsService.delete(id);
   }
 
-  @Delete(':date')
+  @Delete('date/:date')
   deleteAll(@Param('date') date: string) {
     return this.eventsService.deleteAll(date);
   }
