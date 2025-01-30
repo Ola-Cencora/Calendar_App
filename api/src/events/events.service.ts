@@ -67,15 +67,54 @@ export class EventsService {
     return this.databaseService.event.create({
       data: {
         ...createEventDto,
+        startDate: new Date(createEventDto.startDate),
+        endDate: new Date(createEventDto.endDate),
         date: new Date(date),
       },
     });
   }
 
   async update(id: number, updateEventDto: UpdateEventDto) {
+    const startDate = updateEventDto.startDate
+      ? new Date(
+          updateEventDto.startDate.endsWith('Z')
+            ? updateEventDto.startDate
+            : `${updateEventDto.startDate}Z`,
+        )
+      : undefined;
+
+    const endDate = updateEventDto.endDate
+      ? new Date(
+          updateEventDto.endDate.endsWith('Z')
+            ? updateEventDto.endDate
+            : `${updateEventDto.endDate}Z`,
+        )
+      : undefined;
+
+    const date = updateEventDto.date
+      ? new Date(
+          updateEventDto.date.endsWith('Z')
+            ? updateEventDto.date
+            : `${updateEventDto.date}Z`,
+        )
+      : undefined;
+
+    if (
+      (startDate && isNaN(startDate.getTime())) ||
+      (endDate && isNaN(endDate.getTime())) ||
+      (date && isNaN(date.getTime()))
+    ) {
+      throw new Error('Invalid date format');
+    }
+
     return this.databaseService.event.update({
       where: { id },
-      data: updateEventDto,
+      data: {
+        ...updateEventDto,
+        startDate,
+        endDate,
+        date,
+      },
     });
   }
 
