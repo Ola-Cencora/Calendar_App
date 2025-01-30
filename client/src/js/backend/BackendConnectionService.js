@@ -2,116 +2,110 @@ import mockData from "./mockData.json";
 
 export class BackendConnectionService {
   constructor() {
+    this.apiUrl = "http://localhost:8000/api/events";
     this.events = [];
   }
 
-  getEventById(eventId) {
-    for (const day of this.events) {
-      const event = day.events.find(
-        (ev) => ev.id.toString() === eventId.toString()
-      );
-      if (event) {
-        return event;
+  async init() {
+    try {
+      const response = await fetch(this.apiUrl);
+      this.events = await response.json();
+    } catch (error) {
+      console.error("Błąd podczas pobierania danych:", error);
+    }
+  }
+
+  async fetchEvents() {
+    try {
+      const response = await fetch(this.apiUrl);
+      if (!response.ok) throw new Error("Failed to fetch events");
+      this.events = await response.json();
+      if (this.onDataUpdate) this.onDataUpdate(this.events);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    }
+  }
+
+  async getEventById(eventId) {
+    try {
+      const response = await fetch(`${this.apiUrl}/${eventId}`);
+      if (!response.ok) throw new Error("Event not found");
+      return await response.json();
+    } catch (error) {
+      console.error("Error fetching event:", error);
+      return null;
+    }
+  }
+
+  async addEvent(selectedDate, eventData) {
+    try {
+      const response = await fetch(`${this.apiUrl}/${selectedDate}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: eventData.title,
+          description: eventData.description,
+          startDate: eventData.startDate,
+          endDate: eventData.endDate,
+          userId: 101,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          `Failed to add event: ${errorData.message || response.statusText}`
+        );
       }
-    }
-    return null;
-  }
 
-  addEvent(selectedDate, eventData) {
-    let day = this.events.find((day) => day.date === selectedDate);
-
-    if (!day) {
-      day = { date: selectedDate, events: [] };
-      this.events.push(day);
-    }
-
-    const newEvent = {
-      id: Date.now(),
-      ...eventData,
-      userId: null,
-    };
-
-    day.events.push(newEvent);
-  }
-
-  updateEvent(eventId, originalDate, updatedEventData) {
-    const originalDay = this.events.find((day) => day.date === originalDate);
-
-    if (originalDay) {
-      const eventIndex = originalDay.events.findIndex(
-        (event) => event.id.toString() === eventId.toString()
-      );
-
-      if (eventIndex !== -1) {
-        const [event] = originalDay.events.splice(eventIndex, 1);
-
-        if (originalDay.events.length === 0) {
-          this.events = this.events.filter((day) => day.date !== originalDate);
-        }
-
-        Object.assign(event, updatedEventData);
-
-        const newDate = updatedEventData.startDate.slice(0, 10);
-        let newDay = this.events.find((day) => day.date === newDate);
-
-        if (!newDay) {
-          newDay = { date: newDate, events: [] };
-          this.events.push(newDay);
-        }
-
-        newDay.events.push(event);
-      }
-    }
-
-    if (this.onDataUpdate) {
-      this.onDataUpdate(this.events);
+      await this.fetchEvents();
+    } catch (error) {
+      console.error("Error adding event:", error);
     }
   }
 
-  deleteAllEvents(selectedDate) {
-    const dayIndex = this.events.findIndex((listElement) => {
-      return listElement.date === selectedDate;
-    });
-
-    if (dayIndex !== -1) {
-      this.events.splice(dayIndex, 1);
+  async updateEvent(eventId, selectedDate, updatedEventData) {
+    try {
+      const response = await fetch(`${this.apiUrl}/${eventId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: updatedEventData.title,
+          description: updatedEventData.description,
+          startDate: updatedEventData.startDate,
+          endDate: updatedEventData.endDate,
+          date: selectedDate,
+          userId: 101,
+        }),
+      });
+      if (!response.ok) throw new Error("Failed to update event");
+      await this.fetchEvents();
+    } catch (error) {
+      console.error("Error updating event:", error);
     }
   }
 
-  deleteEvent(eventId, selectedDate) {
-    const selectedDay = this.events.find((listElement) => {
-      return listElement.date === selectedDate;
-    });
-
-    if (selectedDay) {
-      const eventIndex = selectedDay.events.findIndex(
-        (ev) => ev.id.toString() === eventId
-      );
-
-      if (eventIndex !== -1) {
-        selectedDay.events.splice(eventIndex, 1);
-
-        if (selectedDay.events.length === 0) {
-          this.events = this.events.filter(
-            (listElement) => listElement.date !== selectedDate
-          );
-        }
-      }
+  async deleteAllEvents(selectedDate) {
+    try {
+      const response = await fetch(`${this.apiUrl}/date/${selectedDate}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error("Failed to delete all events");
+      await this.fetchEvents();
+    } catch (error) {
+      console.error("Error deleting all events:", error);
     }
   }
 
-  readData() {
-    this.events = Object.entries(mockData).map(([date, dayData]) => ({
-      date,
-      events: dayData.events.map((event) => ({
-        id: event.id,
-        title: event.title,
-        description: event.description,
-        userId: event.userId,
-        startDate: event.startDate,
-        endDate: event.endDate,
-      })),
-    }));
-    return this.events;
+  async deleteEvent(eventId, selectedDate) {
+    try {
+      const response = await fetch(`${this.apiUrl}/${eventId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error("Failed to delete event");
+      await this.fetchEvents();
+    } catch (error) {
+      console.error("Error deleting event:", error);
+    }
   }
 }

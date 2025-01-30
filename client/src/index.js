@@ -4,11 +4,17 @@ import { BackendConnectionService } from "./js/backend/BackendConnectionService"
 
 const calendarSection = document.querySelector(".calendar__container");
 
-const backendConnectionService = new BackendConnectionService();
-const calendarEvents = backendConnectionService.readData();
+(async () => {
+  try {
+    const backendConnectionService = new BackendConnectionService();
+    await backendConnectionService.init();
 
-const calendarView = new CalendarViewController(
-  calendarSection,
-  backendConnectionService,
-  calendarEvents
-);
+    const calendarView = new CalendarViewController(
+      calendarSection,
+      backendConnectionService,
+      backendConnectionService.events
+    );
+  } catch (error) {
+    console.error("Błąd podczas inicjalizacji aplikacji:", error);
+  }
+})();

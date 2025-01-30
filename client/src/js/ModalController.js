@@ -216,7 +216,7 @@ class ModalController {
 
     modalContent.appendChild(form);
 
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const formData = new FormData(form);
@@ -240,9 +240,13 @@ class ModalController {
       };
 
       if (eventData) {
-        this.backendService.updateEvent(eventData.id, selectedDate, newEvent);
+        await this.backendService.updateEvent(
+          eventData.id,
+          selectedDate,
+          newEvent
+        );
       } else {
-        this.backendService.addEvent(
+        await this.backendService.addEvent(
           this.formatDate(newEvent.startDate),
           newEvent
         );
@@ -263,23 +267,23 @@ class ModalController {
 
     const deleteAllButton = document.querySelector("#delete-all-button");
     if (deleteAllButton)
-      deleteAllButton.addEventListener("click", () => {
-        this.backendService.deleteAllEvents(selectedDate);
+      deleteAllButton.addEventListener("click", async () => {
+        await this.backendService.deleteAllEvents(selectedDate);
         this.updateAll(selectedDate);
       });
 
     document.querySelectorAll("#edit-button").forEach((button) => {
-      button.addEventListener("click", (e) => {
+      button.addEventListener("click", async (e) => {
         const eventId = e.target.getAttribute("data-id");
-        const eventData = this.backendService.getEventById(eventId);
+        const eventData = await this.backendService.getEventById(eventId);
         this.openEventForm(eventData, selectedDate);
       });
     });
 
     document.querySelectorAll("#delete-button").forEach((button) => {
-      button.addEventListener("click", (e) => {
+      button.addEventListener("click", async (e) => {
         const eventId = e.target.getAttribute("data-id");
-        this.backendService.deleteEvent(eventId, selectedDate);
+        await this.backendService.deleteEvent(eventId, selectedDate);
         this.updateAll(selectedDate);
       });
     });
