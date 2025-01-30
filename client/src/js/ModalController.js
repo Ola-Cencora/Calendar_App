@@ -240,9 +240,10 @@ class ModalController {
       };
 
       if (eventData) {
+        const newEventDate = formData.get("date");
         await this.backendService.updateEvent(
           eventData.id,
-          selectedDate,
+          newEventDate,
           newEvent
         );
       } else {

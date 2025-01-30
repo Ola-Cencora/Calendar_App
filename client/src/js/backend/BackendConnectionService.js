@@ -64,7 +64,7 @@ export class BackendConnectionService {
     }
   }
 
-  async updateEvent(eventId, selectedDate, updatedEventData) {
+  async updateEvent(eventId, newEventDate, updatedEventData) {
     try {
       const response = await fetch(`${this.apiUrl}/${eventId}`, {
         method: "PATCH",
@@ -74,7 +74,7 @@ export class BackendConnectionService {
           description: updatedEventData.description,
           startDate: updatedEventData.startDate,
           endDate: updatedEventData.endDate,
-          date: selectedDate,
+          date: newEventDate,
           userId: 101,
         }),
       });
