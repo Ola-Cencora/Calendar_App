@@ -5,6 +5,8 @@ import { EventsModule } from './events/events.module';
 import { DatabaseModule } from './database/database.module';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { APP_GUARD } from '@nestjs/core';
         limit: 100,
       },
     ]),
+    UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
